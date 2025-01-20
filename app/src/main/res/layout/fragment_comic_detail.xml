@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.comic.ComicDetailFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/gray_400">
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:id="@+id/collapsing_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:contentScrim="?colorSurface"
+                        app:expandedTitleTextColor="@android:color/transparent"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                        app:title="Detail">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="256dp"
+                            app:layout_collapseMode="parallax">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivCoverBackground"
+                                android:layout_width="0dp"
+                                android:layout_height="256dp"
+                                android:adjustViewBounds="true"
+                                android:scaleType="matrix"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="ContentDescription"
+                                tools:src="@tools:sample/backgrounds/scenic" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_surface_gradient"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivCover"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="@dimen/dp_16"
+                                android:layout_marginTop="32dp"
+                                android:layout_marginBottom="@dimen/dp_16"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintDimensionRatio="3:4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/guideline"
+                                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+                                tools:src="@tools:sample/avatars" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvTitle"
+                                style="@style/TextAppearance.Material3.TitleSmall"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/dp_16"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/ivCover"
+                                app:layout_constraintTop_toTopOf="@id/ivCover"
+                                tools:text="@tools:sample/full_names" />
+
+                            <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                android:id="@+id/scArtist"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/dp_16"
+                                android:layout_marginTop="4dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/ivCover"
+                                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                                app:shimmerHeight="12dp"
+                                app:shimmerWidthPercent="0.5">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/tvArtist"
+                                    style="@style/TextAppearance.Material3.BodySmall"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="3" />
+                            </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                            <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                android:id="@+id/scRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/dp_16"
+                                android:layout_marginTop="4dp"
+                                app:layout_constraintStart_toEndOf="@id/ivCover"
+                                app:layout_constraintTop_toBottomOf="@id/scArtist">
+
+                                <androidx.appcompat.widget.AppCompatRatingBar
+                                    android:id="@+id/ratingBar"
+                                    style="@style/Widget.AppCompat.RatingBar.Small"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:progressTint="?colorError"
+                                    android:rating="0" />
+                            </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                            <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                app:layout_constraintBottom_toBottomOf="@id/scRating"
+                                app:layout_constraintStart_toEndOf="@id/scRating"
+                                app:layout_constraintTop_toTopOf="@id/scRating"
+                                app:shimmerWidth="14dp"
+                                app:shimmerHeight="14dp">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/tvRating"
+                                    style="@style/TextAppearance.Material3.BodyMedium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="0" />
+                            </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnChapter"
+                                style="@style/Widget.Material3.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_16"
+                                app:icon="@drawable/ic_list"
+                                app:layout_constraintBottom_toBottomOf="@id/ivCover"
+                                app:layout_constraintEnd_toStartOf="@+id/btnFavorite"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_chainStyle="packed"
+                                app:layout_constraintStart_toEndOf="@+id/ivCover" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnFavorite"
+                                style="@style/Widget.Material3.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                app:icon="@drawable/ic_favorite"
+                                app:layout_constraintBottom_toBottomOf="@+id/btnChapter"
+                                app:layout_constraintEnd_toStartOf="@+id/btnRead"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/btnChapter" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnRead"
+                                style="@style/Widget.Material3.Button.IconButton.Filled"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="@dimen/dp_16"
+                                android:text="Read"
+                                app:icon="@drawable/ic_eye"
+                                app:iconGravity="textStart"
+                                app:iconPadding="8dp"
+                                app:layout_constraintBottom_toBottomOf="@+id/btnChapter"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/btnFavorite" />
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintGuide_begin="?actionBarSize" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            app:contentInsetStart="4dp"
+                            app:contentInsetEnd="4dp"
+                            app:layout_collapseMode="pin">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnBack"
+                                style="@style/Widget.Material3.Button.IconButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start|center_vertical"
+                                app:backgroundTint="?colorSurface"
+                                app:iconSize="24dp"
+                                app:icon="@drawable/ic_arrow_left"
+                                app:iconTint="?colorOnSurface" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnMore"
+                                style="@style/Widget.Material3.Button.IconButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center_vertical"
+                                app:iconSize="24dp"
+                                app:backgroundTint="?colorSurface"
+                                app:icon="@drawable/ic_more"
+                                app:iconTint="?colorOnSurface" />
+
+                        </com.google.android.material.appbar.MaterialToolbar>
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="104dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvSynopsis"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_16"
+                            android:animateLayoutChanges="true"
+                            app:cardElevation="1dp"
+                            app:strokeWidth="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/dp_16"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    style="@style/TextAppearance.Material3.TitleMedium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Synopsis" />
+
+                                <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    app:shimmerHeight="180dp">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/tvSynopsis"
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:maxLines="10" />
+                                </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/btnShowMore"
+                                    style="@style/TextAppearance.Material3.BodyMedium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/show_more"
+                                    android:textColor="?colorPrimary" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_16"
+                            app:cardElevation="1dp"
+                            app:strokeWidth="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/dp_16"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    style="@style/TextAppearance.Material3.TitleMedium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Info" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Alternative" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvAlternative"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="@tools:sample/full_names" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Genre" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvGenre"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="@tools:sample/date/hhmmss" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Author" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16"
+                                        app:shimmerWidthPercent="0.5">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvAuthor"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="@tools:sample/full_names" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Publish Date" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16"
+                                        app:shimmerWidthPercent="0.5">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvPublishDate"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="@tools:sample/date/ddmmyy" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Publisher" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16"
+                                        app:shimmerWidthPercent="0.5">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvPublisher"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="@tools:sample/full_names" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Type" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16"
+                                        app:shimmerWidthPercent="0.25">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvType"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="Comic" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    android:orientation="horizontal">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        style="@style/TextAppearance.Material3.BodyMedium"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Status" />
+
+                                    <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2"
+                                        app:shimmerHeight="@dimen/dp_16"
+                                        app:shimmerWidthPercent="0.25">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/tvStatus"
+                                            style="@style/TextAppearance.Material3.BodyMedium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:text="Ongoing" />
+                                    </yu.desk.mococomic.presentation.component.ShimmerContainer>
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_16"
+                            app:cardElevation="1dp"
+                            app:strokeWidth="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/dp_16"
+                                android:orientation="vertical">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    style="@style/TextAppearance.Material3.TitleMedium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="@dimen/dp_16"
+                                    android:text="Chapters" />
+
+                                <yu.desk.mococomic.presentation.component.ShimmerContainer
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="@dimen/dp_16"
+                                    android:layout_marginTop="@dimen/dp_16"
+                                    app:shimmerHeight="200dp">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rvChapters"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:nestedScrollingEnabled="false"
+                                        android:clipToPadding="false"
+                                        android:layout_marginHorizontal="-16dp"
+                                        android:orientation="vertical"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                                </yu.desk.mococomic.presentation.component.ShimmerContainer>
+
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bottomMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_margin="@dimen/dp_16"
+                    android:animateLayoutChanges="true"
+                    android:maxWidth="600dp"
+                    android:visibility="visible"
+                    app:cardElevation="1dp"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+                    app:strokeWidth="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_16"
+                        android:orientation="horizontal">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBottomChapter"
+                            style="@style/Widget.Material3.Button.IconButton.Filled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_list"
+                            app:iconSize="24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnBottomFavorite"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintHorizontal_chainStyle="spread"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBottomFavorite"
+                            style="@style/Widget.Material3.Button.IconButton.Filled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_favorite_outline"
+                            app:iconSize="24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnBottomComment"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/btnBottomChapter"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBottomComment"
+                            style="@style/Widget.Material3.Button.IconButton.Filled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_comment"
+                            app:iconSize="24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnBottomRead"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/btnBottomFavorite"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBottomRead"
+                            style="@style/Widget.Material3.Button.IconButton.Filled"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Read"
+                            app:icon="@drawable/ic_eye"
+                            app:iconGravity="textStart"
+                            app:iconPadding="8dp"
+                            app:iconSize="24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/btnBottomComment"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <yu.desk.mococomic.presentation.component.ErrorView
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:fitsSystemWindows="true"
+            app:description="Something went wrong. Please try again later."
+            app:showToolbar="true"
+            app:showRetryButton="true"
+            app:title="Error" />
+    </FrameLayout>
+
+    <include
+        android:id="@+id/navView"
+        layout="@layout/navigation_drawer_chapter" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

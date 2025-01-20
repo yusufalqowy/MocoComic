@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Moco Comic</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_explore">Explore</string>
+    <string name="menu_favorite">Favorite</string>
+    <string name="menu_profile">Profile</string>
+
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <string name="error_description">An unexpected error occurred. Please try again later.</string>
+    <string name="error_title">Something Went Wrong</string>
+    <string name="text_retry">Retry</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

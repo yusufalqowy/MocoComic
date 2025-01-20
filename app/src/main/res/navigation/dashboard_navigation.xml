@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dashboardNavigation"
+    app:startDestination="@id/dashboardHome">
+
+    <fragment
+        android:id="@+id/dashboardHome"
+        android:name="yu.desk.mococomic.presentation.dashboard.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/dashboardExplore"
+        android:name="yu.desk.mococomic.presentation.dashboard.explore.ExploreFragment"
+        android:label="@string/menu_explore"
+        tools:layout="@layout/fragment_explore"/>
+
+    <fragment
+        android:id="@+id/dashboardFavorite"
+        android:name="yu.desk.mococomic.presentation.dashboard.favorite.FavoriteFragment"
+        android:label="@string/menu_favorite"
+        tools:layout="@layout/fragment_favorite"/>
+
+
+    <fragment
+        android:id="@+id/dashboardProfile"
+        android:name="yu.desk.mococomic.presentation.dashboard.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

@@ -1,0 +1,24 @@
+<resources>
+
+    <style name="Widget.Theme.MocoComic.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+    </style>
+
+    <style name="Widget.Theme.MocoComic.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.MocoComic.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+    <style name="Theme.MocoComic.SideSheetDialog.Modal" parent="Widget.Material3.SideSheet.Modal">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="Theme.MocoComic.SideSheetDialog" parent="ThemeOverlay.Material3.SideSheetDialog">
+        <item name="sideSheetModalStyle">@style/Theme.MocoComic.SideSheetDialog.Modal</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appNavigation"
+    app:startDestination="@+id/authLogin">
+    <fragment
+        android:id="@+id/authLogin"
+        android:name="yu.desk.mococomic.presentation.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_authLogin_to_dashboardHost"
+            app:destination="@id/dashboardMain"
+            app:popUpTo="@id/authLogin"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardMain"
+        android:name="yu.desk.mococomic.presentation.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+
+    </fragment>
+
+    <include app:graph="@navigation/comic_navigation" />
+
+</navigation>
