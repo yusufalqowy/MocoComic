@@ -39,7 +39,7 @@ class ExploreFragment : Fragment() {
     private lateinit var comicFilterBottomSheet: ComicFilterBottomSheet
     private lateinit var comicFilterSideSheet: ComicFilterSideSheet
 
-    companion object{
+    companion object {
         const val TAG = "ExploreFragment"
     }
 
@@ -51,7 +51,8 @@ class ExploreFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
@@ -59,7 +60,10 @@ class ExploreFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
@@ -80,7 +84,6 @@ class ExploreFragment : Fragment() {
                     onError = { message ->
                         onError(message)
                     }
-
                 )
             }
         }
@@ -124,7 +127,12 @@ class ExploreFragment : Fragment() {
                 btnFilter.isChecked = isFilterEnable()
                 viewModel.apply {
                     if (requireContext().isSizeMobile()) {
-                        comicFilterBottomSheet.showBottomSheet(filterStatus, filterType, filterOrder, filterGenres) { status, type, order, genres ->
+                        comicFilterBottomSheet.showBottomSheet(
+                            filterStatus,
+                            filterType,
+                            filterOrder,
+                            filterGenres
+                        ) { status, type, order, genres ->
                             filterStatus = status
                             filterType = type
                             filterOrder = order
@@ -132,7 +140,12 @@ class ExploreFragment : Fragment() {
                             btnFilter.isChecked = isFilterEnable()
                         }
                     } else {
-                        comicFilterSideSheet.showSideSheet(filterStatus, filterType, filterOrder, filterGenres) { status, type, order, genres ->
+                        comicFilterSideSheet.showSideSheet(
+                            filterStatus,
+                            filterType,
+                            filterOrder,
+                            filterGenres
+                        ) { status, type, order, genres ->
                             filterStatus = status
                             filterType = type
                             filterOrder = order
@@ -141,7 +154,6 @@ class ExploreFragment : Fragment() {
                         }
                     }
                 }
-
             }
         }
     }
@@ -150,15 +162,17 @@ class ExploreFragment : Fragment() {
         binding.apply {
             comicFilterSideSheet = ComicFilterSideSheet(requireContext(), childFragmentManager)
             comicFilterBottomSheet = ComicFilterBottomSheet(requireContext(), childFragmentManager)
-            val tabFilter = TabFilter().also {
-                it.filterStatus = viewModel.filterStatus
-                it.filterType = viewModel.filterType
-                it.filterOrder = viewModel.filterOrder
-            }
+            val tabFilter =
+                TabFilter().also {
+                    it.filterStatus = viewModel.filterStatus
+                    it.filterType = viewModel.filterType
+                    it.filterOrder = viewModel.filterOrder
+                }
 
-            val tabGenre = TabGenre().also {
-                it.filterGenres = viewModel.filterGenres
-            }
+            val tabGenre =
+                TabGenre().also {
+                    it.filterGenres = viewModel.filterGenres
+                }
 
             val tabAdapter = TabFilterAdapter(childFragmentManager, lifecycle)
             tabAdapter.setItems(listOf(tabFilter, tabGenre))
@@ -171,8 +185,17 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private fun isFilterEnable() = viewModel.run { filterStatus != FilterStatus.All || filterType != FilterType.All || filterOrder != FilterOrder.LastUpdate || filterGenres.isNotEmpty() }
+    private fun isFilterEnable() =
+        viewModel.run {
+            filterStatus != FilterStatus.All ||
+                filterType != FilterType.All ||
+                filterOrder != FilterOrder.LastUpdate ||
+                filterGenres.isNotEmpty()
+        }
+
     private fun navigateToComicDetail(comic: Comic) {
-        findNavController(R.id.navHostMain).navigateWithAnimation(R.id.comicNavigation, ComicDetailFragmentArgs.Builder(comic).build().toBundle())
+        findNavController(
+            R.id.navHostMain
+        ).navigateWithAnimation(R.id.comicNavigation, ComicDetailFragmentArgs.Builder(comic).build().toBundle())
     }
 }

@@ -33,15 +33,14 @@ import yu.desk.mococomic.utils.scaleCropTop
 import yu.desk.mococomic.utils.setVisible
 import kotlin.math.abs
 
-
 class ComicDetailFragment : Fragment() {
-
     lateinit var binding: FragmentComicDetailBinding
     private val viewModel: ComicViewModel by navGraphViewModels(R.id.comicNavigation)
     private val navArgs by navArgs<ComicDetailFragmentArgs>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentComicDetailBinding.inflate(inflater, container, false)
@@ -66,8 +65,10 @@ class ComicDetailFragment : Fragment() {
         viewModel.getComicDetail()
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
@@ -76,7 +77,8 @@ class ComicDetailFragment : Fragment() {
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.comicDetailResponse.flowWithLifecycle(lifecycle)
+            viewModel.comicDetailResponse
+                .flowWithLifecycle(lifecycle)
                 .collectLatest {
                     apiResponseHandler(
                         uiState = it,
@@ -112,23 +114,21 @@ class ComicDetailFragment : Fragment() {
                 tvTitle.text = it.title
             }
         }
-
     }
 
     private fun initListener() {
         binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            //Handle swipe refresh layout not easy to scroll
+            // Handle swipe refresh layout not easy to scroll
             binding.swipeRefresh.isEnabled = scrollY == 0
         }
 
         binding.bottomMenu.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            //Handle visible bottom menu when appbar collapse
+            // Handle visible bottom menu when appbar collapse
             binding.bottomMenu.setVisible((abs(verticalOffset) - appBarLayout.totalScrollRange) == 0)
-            //Handle swipe refresh layout not easy to scroll
+            // Handle swipe refresh layout not easy to scroll
             binding.swipeRefresh.isEnabled = verticalOffset == 0
         }
-
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getComicDetail()
@@ -179,7 +179,6 @@ class ComicDetailFragment : Fragment() {
         binding.errorView.setVisible(true)
         binding.swipeRefresh.setVisible(false)
         binding.swipeRefresh.isRefreshing = false
-
     }
 
     private fun onLoading(isLoading: Boolean = true) {
@@ -238,20 +237,22 @@ class ComicDetailFragment : Fragment() {
             }
             rvListChapter.apply {
                 setHasFixedSize(true)
-                adapter = ListChapterAdapter().apply {
-                    setItem(viewModel.getChapterList())
-                    setOnChapterClickListener { item ->
-                        navigateToChapterDetail(item)
+                adapter =
+                    ListChapterAdapter().apply {
+                        setItem(viewModel.getChapterList())
+                        setOnChapterClickListener { item ->
+                            navigateToChapterDetail(item)
+                        }
                     }
-                }
             }
         }
 
         binding.rvChapters.apply {
             setHasFixedSize(true)
-            adapter = ListChapterAdapter().apply {
-                setItem(viewModel.getChapterList().take(5))
-            }
+            adapter =
+                ListChapterAdapter().apply {
+                    setItem(viewModel.getChapterList().take(5))
+                }
         }
     }
 

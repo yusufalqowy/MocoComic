@@ -5,8 +5,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class TabFilterAdapter(fragment: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragment, lifecycle) {
+class TabFilterAdapter(
+    fragment: FragmentManager,
+    lifecycle: Lifecycle,
+) : FragmentStateAdapter(fragment, lifecycle) {
     private var listFragment: MutableList<Fragment> = mutableListOf()
+
     override fun getItemCount(): Int = listFragment.size
 
     override fun createFragment(position: Int): Fragment = listFragment[position]
@@ -16,9 +20,11 @@ class TabFilterAdapter(fragment: FragmentManager, lifecycle: Lifecycle) : Fragme
         notifyItemRangeInserted(0, list.size)
     }
 
-    fun changeFragment(position: Int, fragment: Fragment) {
+    fun changeFragment(
+        position: Int,
+        fragment: Fragment,
+    ) {
         listFragment[position] = fragment
         notifyItemChanged(position, null)
     }
-
 }

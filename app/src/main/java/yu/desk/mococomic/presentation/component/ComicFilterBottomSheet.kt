@@ -13,7 +13,10 @@ import yu.desk.mococomic.utils.FilterOrder
 import yu.desk.mococomic.utils.FilterStatus
 import yu.desk.mococomic.utils.FilterType
 
-class ComicFilterBottomSheet(context: Context, private val fragmentManager: FragmentManager) : BottomSheetDialog(context) {
+class ComicFilterBottomSheet(
+    context: Context,
+    private val fragmentManager: FragmentManager,
+) : BottomSheetDialog(context) {
     private lateinit var binding: LayoutComicFilterBottomSheetBinding
     private var filterListener: ((FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit)? = null
     private var tabFilter = TabFilter()
@@ -29,54 +32,73 @@ class ComicFilterBottomSheet(context: Context, private val fragmentManager: Frag
 
     override fun show() {
         super.show()
-        if(this::binding.isInitialized){
+        if (this::binding.isInitialized) {
             binding.viewPager.adapter = tabFilterAdapter
         }
     }
 
     private fun initView() {
         binding.apply {
-            //Handle for can drag bottom sheet
+            // Handle for can drag bottom sheet
             viewPager.getChildAt(0).isNestedScrollingEnabled = false
-            //Make all page active
+            // Make all page active
             viewPager.offscreenPageLimit = 2
-            //Handle force close "Fragment no longer exists" when open bottom sheet again
+            // Handle force close "Fragment no longer exists" when open bottom sheet again
             viewPager.isSaveEnabled = false
-            tabFilterAdapter = TabFilterAdapter(fragmentManager, lifecycle).apply {
-                setItems(listOf(tabFilter, tabGenre))
-            }
+            tabFilterAdapter =
+                TabFilterAdapter(fragmentManager, lifecycle).apply {
+                    setItems(listOf(tabFilter, tabGenre))
+                }
             viewPager.adapter = tabFilterAdapter
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = when (position) {
-                    0 -> "Filter"
-                    else -> "Genre"
-                }
+                tab.text =
+                    when (position) {
+                        0 -> "Filter"
+                        else -> "Genre"
+                    }
             }.attach()
 
             btnApply.setOnClickListener {
-                Log.e("APPLY","""
+                Log.e(
+                    "APPLY",
+                    """
                     ${tabFilter.filterStatus}
                     ${tabFilter.filterType}
                     ${tabFilter.filterOrder}
                     ${tabGenre.filterGenres}
-                """.trimIndent())
-                filterListener?.invoke(tabFilter.filterStatus, tabFilter.filterType, tabFilter.filterOrder, tabGenre.filterGenres)
+                    """.trimIndent()
+                )
+                filterListener?.invoke(
+                    tabFilter.filterStatus,
+                    tabFilter.filterType,
+                    tabFilter.filterOrder,
+                    tabGenre.filterGenres
+                )
                 dismiss()
             }
         }
     }
 
-    fun showBottomSheet(filterStatus: FilterStatus, filterType: FilterType, filterOrder: FilterOrder, filterGenres: List<FilterGenre>, applyListener: (FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit) {
-        tabFilter = TabFilter().also {
-            it.setFilter(filterStatus, filterType, filterOrder)
-        }
-        tabGenre = TabGenre().also {
-            it.filterGenres = filterGenres
-        }
-        tabFilterAdapter = TabFilterAdapter(fragmentManager, lifecycle).apply {
-            setItems(listOf(tabFilter, tabGenre))
-        }
-        if(!isShowing){
+    fun showBottomSheet(
+        filterStatus: FilterStatus,
+        filterType: FilterType,
+        filterOrder: FilterOrder,
+        filterGenres: List<FilterGenre>,
+        applyListener: (FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit,
+    ) {
+        tabFilter =
+            TabFilter().also {
+                it.setFilter(filterStatus, filterType, filterOrder)
+            }
+        tabGenre =
+            TabGenre().also {
+                it.filterGenres = filterGenres
+            }
+        tabFilterAdapter =
+            TabFilterAdapter(fragmentManager, lifecycle).apply {
+                setItems(listOf(tabFilter, tabGenre))
+            }
+        if (!isShowing) {
             show()
             filterListener = applyListener
         }

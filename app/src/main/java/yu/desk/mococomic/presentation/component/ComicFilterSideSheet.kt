@@ -15,7 +15,10 @@ import yu.desk.mococomic.utils.FilterOrder
 import yu.desk.mococomic.utils.FilterStatus
 import yu.desk.mococomic.utils.FilterType
 
-class ComicFilterSideSheet(context: Context, private val fragmentManager: FragmentManager) : SideSheetDialog(context, R.style.Theme_MocoComic_SideSheetDialog) {
+class ComicFilterSideSheet(
+    context: Context,
+    private val fragmentManager: FragmentManager,
+) : SideSheetDialog(context, R.style.Theme_MocoComic_SideSheetDialog) {
     private lateinit var binding: LayoutComicFilterSideSheetBinding
     private var filterListener: ((FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit)? = null
     private var tabFilterAdapter: TabFilterAdapter? = null
@@ -25,7 +28,12 @@ class ComicFilterSideSheet(context: Context, private val fragmentManager: Fragme
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LayoutComicFilterSideSheetBinding.inflate(layoutInflater)
-        val layoutParams = ViewGroup.LayoutParams(context.resources.displayMetrics.widthPixels.div(2), ViewGroup.LayoutParams.MATCH_PARENT)
+        val layoutParams =
+            ViewGroup.LayoutParams(
+                context.resources.displayMetrics.widthPixels
+                    .div(2),
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
         initView()
         setContentView(binding.root, layoutParams)
     }
@@ -37,17 +45,26 @@ class ComicFilterSideSheet(context: Context, private val fragmentManager: Fragme
         }
     }
 
-    fun showSideSheet(filterStatus: FilterStatus, filterType: FilterType, filterOrder: FilterOrder, filterGenres: List<FilterGenre>, applyListener: (FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit) {
+    fun showSideSheet(
+        filterStatus: FilterStatus,
+        filterType: FilterType,
+        filterOrder: FilterOrder,
+        filterGenres: List<FilterGenre>,
+        applyListener: (FilterStatus, FilterType, FilterOrder, List<FilterGenre>) -> Unit,
+    ) {
         if (!this.isShowing) {
-            tabFilter = TabFilter().also {
-                it.setFilter(filterStatus, filterType, filterOrder)
-            }
-            tabGenre = TabGenre().also {
-                it.filterGenres = filterGenres
-            }
-            tabFilterAdapter = TabFilterAdapter(fragmentManager, lifecycle).apply {
-                setItems(listOf(tabFilter, tabGenre))
-            }
+            tabFilter =
+                TabFilter().also {
+                    it.setFilter(filterStatus, filterType, filterOrder)
+                }
+            tabGenre =
+                TabGenre().also {
+                    it.filterGenres = filterGenres
+                }
+            tabFilterAdapter =
+                TabFilterAdapter(fragmentManager, lifecycle).apply {
+                    setItems(listOf(tabFilter, tabGenre))
+                }
             show()
             filterListener = applyListener
         }
@@ -55,36 +72,43 @@ class ComicFilterSideSheet(context: Context, private val fragmentManager: Fragme
 
     private fun initView() {
         binding.apply {
-            //Handle for can drag bottom sheet
+            // Handle for can drag bottom sheet
             viewPager.getChildAt(0).isNestedScrollingEnabled = false
-            //Make all page active
+            // Make all page active
             viewPager.offscreenPageLimit = 2
 
-            tabFilterAdapter = TabFilterAdapter(fragmentManager, lifecycle).apply {
-                setItems(listOf(tabFilter, tabGenre))
-            }
+            tabFilterAdapter =
+                TabFilterAdapter(fragmentManager, lifecycle).apply {
+                    setItems(listOf(tabFilter, tabGenre))
+                }
             viewPager.adapter = tabFilterAdapter
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = when (position) {
-                    0 -> "Filter"
-                    else -> "Genre"
-                }
+                tab.text =
+                    when (position) {
+                        0 -> "Filter"
+                        else -> "Genre"
+                    }
             }.attach()
 
             btnApplyFilter.setOnClickListener {
                 Log.e(
-                    "APPLY", """
+                    "APPLY",
+                    """
                     ${tabFilter.filterStatus}
                     ${tabFilter.filterType}
                     ${tabFilter.filterOrder}
                     ${tabGenre.filterGenres}
-                """.trimIndent()
+                    """.trimIndent()
                 )
-                filterListener?.invoke(tabFilter.filterStatus, tabFilter.filterType, tabFilter.filterOrder, tabGenre.filterGenres)
+                filterListener?.invoke(
+                    tabFilter.filterStatus,
+                    tabFilter.filterType,
+                    tabFilter.filterOrder,
+                    tabGenre.filterGenres
+                )
                 dismiss()
             }
         }
     }
-
 }

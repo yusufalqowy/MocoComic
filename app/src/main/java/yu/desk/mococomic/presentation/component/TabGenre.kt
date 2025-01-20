@@ -15,12 +15,19 @@ class TabGenre : Fragment() {
     private lateinit var binding: FragmentTabGenreBinding
     var filterGenres: List<FilterGenre> = emptyList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         binding = FragmentTabGenreBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
@@ -57,12 +64,19 @@ class TabGenre : Fragment() {
     private fun initView() {
         binding.apply {
             FilterGenre.entries.forEach {
-                val chip = Chip(requireContext(), null).apply {
-                    val drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_Material3_Chip_Filter)
-                    setChipDrawable(drawable)
-                    text = it.title
-                    id = it.id
-                }
+                val chip =
+                    Chip(requireContext(), null).apply {
+                        val drawable =
+                            ChipDrawable.createFromAttributes(
+                                requireContext(),
+                                null,
+                                0,
+                                com.google.android.material.R.style.Widget_Material3_Chip_Filter
+                            )
+                        setChipDrawable(drawable)
+                        text = it.title
+                        id = it.id
+                    }
                 cgGenre.addView(chip)
             }
         }

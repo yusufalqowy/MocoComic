@@ -33,6 +33,7 @@ class ComicViewModel : ViewModel() {
     }
 
     fun getChapterList() = comicDetail.chapters
+
     fun getComicDetail() {
         Log.e("TAG", "getComicDetail: $comic")
         viewModelScope.launch {

@@ -9,7 +9,11 @@ import yu.desk.mococomic.presentation.comic.ComicReaderListener
 import yu.desk.mococomic.presentation.comic.ComicViewModel
 import yu.desk.mococomic.utils.loadImage
 
-class ComicReaderBottomSheet(context: Context, private val viewModel: ComicViewModel, private val listener: ComicReaderListener) : BottomSheetDialog(context) {
+class ComicReaderBottomSheet(
+    context: Context,
+    private val viewModel: ComicViewModel,
+    private val listener: ComicReaderListener,
+) : BottomSheetDialog(context) {
     lateinit var binding: LayoutComicReaderBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +25,9 @@ class ComicReaderBottomSheet(context: Context, private val viewModel: ComicViewM
 
     override fun show() {
         super.show()
-        if(this::binding.isInitialized){
-            binding.chapterSlider.value = (viewModel.getChapterList().reversed().indexOf(viewModel.chapter) + 1).toFloat()
+        if (this::binding.isInitialized) {
+            binding.chapterSlider.value =
+                (viewModel.getChapterList().reversed().indexOf(viewModel.chapter) + 1).toFloat()
         }
     }
 
@@ -62,7 +67,6 @@ class ComicReaderBottomSheet(context: Context, private val viewModel: ComicViewM
             btnFavorite.setOnClickListener {
                 listener.onFavoriteClickListener(Chapter())
             }
-
         }
     }
 }

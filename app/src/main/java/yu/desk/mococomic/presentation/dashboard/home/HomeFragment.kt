@@ -1,13 +1,9 @@
 package yu.desk.mococomic.presentation.dashboard.home
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -34,14 +30,13 @@ import yu.desk.mococomic.utils.setVisible
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private var doubleBackToExitPressedOnce = false
     private val viewModel by viewModels<DashboardViewModel>(ownerProducer = { requireParentFragment() })
     private val rvCarouselAdapter by lazy { CarouselComicAdapter() }
     private val rvPopularAdapter by lazy { ComicAdapter() }
     private val rvNewAdapter by lazy { ComicAdapter() }
     private val rvUpdateAdapter by lazy { ComicAdapter() }
 
-    companion object{
+    companion object {
         const val TAG = "HomeFragment"
     }
 
@@ -52,16 +47,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
@@ -81,7 +79,7 @@ class HomeFragment : Fragment() {
                     },
                     onError = { message ->
                         onError(message)
-                    },
+                    }
                 )
             }
         }
@@ -117,16 +115,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initListener() {
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (doubleBackToExitPressedOnce) {
-                activity?.finishAffinity()
-            } else {
-                doubleBackToExitPressedOnce = true
-                Toast.makeText(context, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
-                Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
-            }
-            return@addCallback
-        }
         binding.apply {
             binding.swipeRefresh.setOnRefreshListener {
                 viewModel.getHome()
@@ -179,9 +167,13 @@ class HomeFragment : Fragment() {
 
     private fun navigateToComicDetail(comic: Comic) {
         findNavController(R.id.navHostMain)
-            .navigateWithAnimation(R.id.comicNavigation, ComicDetailFragmentArgs.Builder(comic).build().toBundle(), navOptions {
-                popUpTo(R.id.dashboardMain)
-                launchSingleTop = true
-            })
+            .navigateWithAnimation(
+                R.id.comicNavigation,
+                ComicDetailFragmentArgs.Builder(comic).build().toBundle(),
+                navOptions {
+                    popUpTo(R.id.dashboardMain)
+                    launchSingleTop = true
+                }
+            )
     }
 }

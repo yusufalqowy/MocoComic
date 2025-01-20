@@ -7,24 +7,33 @@ import yu.desk.mococomic.databinding.ItemChapterBinding
 import yu.desk.mococomic.domain.model.Chapter
 
 class ListChapterAdapter : RecyclerView.Adapter<ListChapterAdapter.ViewHolder>() {
-
     private var listChapter: List<Chapter> = emptyList()
     private var selectedChapter: Chapter? = null
     private var onChapterClickListener: ((Chapter) -> Unit)? = null
 
+    class ViewHolder(
+        val binding: ItemChapterBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
 
-    class ViewHolder(val binding: ItemChapterBinding) : RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
         val binding = ItemChapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         bind(holder.binding, listChapter[position])
     }
 
-    private fun bind(binding: ItemChapterBinding, chapter: Chapter) {
+    private fun bind(
+        binding: ItemChapterBinding,
+        chapter: Chapter,
+    ) {
         binding.apply {
             itemChapter.isItemSelected = chapter.slug == selectedChapter?.slug
             itemChapter.isTrailingIconVisible = chapter.isAlreadyRead
@@ -34,7 +43,6 @@ class ListChapterAdapter : RecyclerView.Adapter<ListChapterAdapter.ViewHolder>()
                     listener.invoke(chapter)
                 }
             }
-
         }
     }
 

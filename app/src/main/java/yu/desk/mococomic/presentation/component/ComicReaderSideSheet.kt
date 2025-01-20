@@ -11,13 +11,22 @@ import yu.desk.mococomic.presentation.comic.ComicReaderListener
 import yu.desk.mococomic.presentation.comic.ComicViewModel
 import yu.desk.mococomic.utils.loadImage
 
-class ComicReaderSideSheet(context: Context, private val viewModel: ComicViewModel, private val listener: ComicReaderListener) : SideSheetDialog(context, R.style.Theme_MocoComic_SideSheetDialog) {
+class ComicReaderSideSheet(
+    context: Context,
+    private val viewModel: ComicViewModel,
+    private val listener: ComicReaderListener,
+) : SideSheetDialog(context, R.style.Theme_MocoComic_SideSheetDialog) {
     private lateinit var binding: LayoutComicReaderSideSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LayoutComicReaderSideSheetBinding.inflate(layoutInflater)
-        val layoutParams = ViewGroup.LayoutParams(context.resources.displayMetrics.widthPixels.div(2), ViewGroup.LayoutParams.MATCH_PARENT)
+        val layoutParams =
+            ViewGroup.LayoutParams(
+                context.resources.displayMetrics.widthPixels
+                    .div(2),
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
         initView()
         setContentView(binding.root, layoutParams)
     }
@@ -25,7 +34,8 @@ class ComicReaderSideSheet(context: Context, private val viewModel: ComicViewMod
     override fun show() {
         super.show()
         if (this::binding.isInitialized) {
-            binding.chapterSlider.value = (viewModel.getChapterList().reversed().indexOf(viewModel.chapter) + 1).toFloat()
+            binding.chapterSlider.value =
+                (viewModel.getChapterList().reversed().indexOf(viewModel.chapter) + 1).toFloat()
         }
     }
 
@@ -67,5 +77,4 @@ class ComicReaderSideSheet(context: Context, private val viewModel: ComicViewMod
             }
         }
     }
-
 }

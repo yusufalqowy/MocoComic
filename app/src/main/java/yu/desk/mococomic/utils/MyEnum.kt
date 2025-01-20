@@ -5,35 +5,48 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import yu.desk.mococomic.R
 
-
-enum class FilterStatus(val title: String, val path: String, @IdRes val id: Int = View.generateViewId()) {
+enum class FilterStatus(
+    val title: String,
+    val path: String,
+    @IdRes val id: Int = View.generateViewId(),
+) {
     All("All", ""),
     Favorite("Favorite", ""),
     Ongoing("Ongoing", "Ongoing"),
-    Completed("Completed", "Completed");
+    Completed("Completed", "Completed"),
+    ;
 
     companion object {
-        fun getById(@IdRes id: Int): FilterStatus {
-            return FilterStatus.entries.find { it.id == id } ?: All
-        }
+        fun getById(
+            @IdRes id: Int,
+        ): FilterStatus = FilterStatus.entries.find { it.id == id } ?: All
     }
 }
 
-enum class FilterOrder(val title: String, val path: String, @IdRes val id: Int = View.generateViewId()) {
+enum class FilterOrder(
+    val title: String,
+    val path: String,
+    @IdRes val id: Int = View.generateViewId(),
+) {
     LastUpdate("Last Updated", "update"),
     LastAdded("Last Added", "latest"),
     Popular("Popular", "popular"),
     ASC("A-Z", "title"),
-    DESC("Z-A", "titlereverse");
+    DESC("Z-A", "titlereverse"),
+    ;
 
     companion object {
-        fun getById(@IdRes id: Int): FilterOrder {
-            return FilterOrder.entries.find { it.id == id } ?: LastUpdate
-        }
+        fun getById(
+            @IdRes id: Int,
+        ): FilterOrder = FilterOrder.entries.find { it.id == id } ?: LastUpdate
     }
 }
 
-enum class FilterGenre(val title: String, val path: String, @IdRes val id: Int = View.generateViewId()) {
+enum class FilterGenre(
+    val title: String,
+    val path: String,
+    @IdRes val id: Int = View.generateViewId(),
+) {
     Action("Action", "9"),
     Adventure("Adventure", "12"),
     Comedy("Comedy", "4"),
@@ -54,38 +67,50 @@ enum class FilterGenre(val title: String, val path: String, @IdRes val id: Int =
     Science("Science Fiction", "20"),
     SliceOfLife("Slice of Life", "65"),
     Sport("Sport", "22"),
-    Thriller("Thriller", "213");
+    Thriller("Thriller", "213"),
+    ;
 
     companion object {
-        fun getById(@IdRes id: Int): FilterGenre? {
-            return FilterGenre.entries.find { it.id == id }
-        }
+        fun getById(
+            @IdRes id: Int,
+        ): FilterGenre? = FilterGenre.entries.find { it.id == id }
     }
 }
 
-enum class FilterType(val title: String, val path: String, @IdRes val id: Int = View.generateViewId()) {
+enum class FilterType(
+    val title: String,
+    val path: String,
+    @IdRes val id: Int = View.generateViewId(),
+) {
     All("All", ""),
     Manga("Manga", "Manga"),
     Manhwa("Manhwa", "Manhwa"),
     Manhua("Manhua", "Manhua"),
-    Comic("Comic", "Comic");
+    Comic("Comic", "Comic"),
+    ;
 
     companion object {
-        fun getById(@IdRes id: Int): FilterType {
-            return FilterType.entries.find { it.id == id } ?: All
-        }
+        fun getById(
+            @IdRes id: Int,
+        ): FilterType = FilterType.entries.find { it.id == id } ?: All
     }
 }
 
-enum class ComicType(val title: String, @DrawableRes val icon: Int) {
+enum class ComicType(
+    val title: String,
+    @DrawableRes val icon: Int,
+) {
     Manga("Manga", R.drawable.ic_japan),
     Manhwa("Manhwa", R.drawable.ic_south_korea),
     Manhua("Manhua", R.drawable.ic_china),
     Comic("Comic", R.drawable.ic_usa),
-    Unknown("-", 0)
+    Unknown("-", 0),
 }
 
-enum class FilterComic(val path: String, @DrawableRes val icon: Int) {
+enum class FilterComic(
+    val path: String,
+    @DrawableRes val icon: Int,
+) {
     Refresh("refresh", R.drawable.ic_replay),
     Latest("latest", R.drawable.ic_replay),
     Trending("trending", R.drawable.ic_replay),
@@ -94,5 +119,5 @@ enum class FilterComic(val path: String, @DrawableRes val icon: Int) {
     News("new", R.drawable.ic_replay),
     Alphabet("az", R.drawable.ic_replay),
     Project("project", R.drawable.ic_replay),
-    Mirror("mirror", R.drawable.ic_replay)
+    Mirror("mirror", R.drawable.ic_replay),
 }

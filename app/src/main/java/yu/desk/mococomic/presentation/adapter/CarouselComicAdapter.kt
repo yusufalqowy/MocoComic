@@ -18,24 +18,34 @@ class CarouselComicAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: List<Any> = emptyList()
     private var onComicClick: ((Comic) -> Unit)? = null
 
-    class ComicViewHolder(val binding: ItemCarouselBinding) : RecyclerView.ViewHolder(binding.root)
-    class ShimmerViewHolder(val binding: ItemCarouselShimmerBinding) : RecyclerView.ViewHolder(binding.root)
+    class ComicViewHolder(
+        val binding: ItemCarouselBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
+
+    class ShimmerViewHolder(
+        val binding: ItemCarouselShimmerBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int = if (items[position] is Comic) COMIC_TYPE else COMIC_SHIMMER_TYPE
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         val binding =
             ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val shimmerBinding = ItemCarouselShimmerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return if (viewType == COMIC_TYPE) ComicViewHolder(binding) else ShimmerViewHolder(shimmerBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         val item = items[position]
         if (holder is ComicViewHolder && item is Comic) {
             bind(holder.binding, item)
         }
-
     }
 
     private fun bind(

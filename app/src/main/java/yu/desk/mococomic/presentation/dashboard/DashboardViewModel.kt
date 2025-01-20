@@ -9,10 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.domain.model.Comic
-import yu.desk.mococomic.presentation.dashboard.explore.ExploreFragment
-import yu.desk.mococomic.presentation.dashboard.favorite.FavoriteFragment
-import yu.desk.mococomic.presentation.dashboard.home.HomeFragment
-import yu.desk.mococomic.presentation.dashboard.profile.ProfileFragment
 import yu.desk.mococomic.utils.FilterGenre
 import yu.desk.mococomic.utils.FilterOrder
 import yu.desk.mococomic.utils.FilterStatus
@@ -33,14 +29,14 @@ class DashboardViewModel : ViewModel() {
     private val _homeResponse = MutableStateFlow<UIState<List<Comic>>>(UIState.Empty())
     val homeResponse = _homeResponse.asStateFlow()
 
-    fun getHome(){
+    fun getHome() {
         viewModelScope.launch {
             _homeResponse.value = UIState.Loading()
             delay(3000)
-            if(Random.nextBoolean()){
+            if (Random.nextBoolean()) {
                 _homeResponse.value = UIState.Success(sampleListComic)
             } else {
-                _homeResponse.value = UIState.Error(0,"Error")
+                _homeResponse.value = UIState.Error(0, "Error")
             }
         }
     }
@@ -49,12 +45,11 @@ class DashboardViewModel : ViewModel() {
         viewModelScope.launch {
             _exploreResponse.value = UIState.Loading()
             delay(3000)
-            if(Random.nextBoolean()){
+            if (Random.nextBoolean()) {
                 _exploreResponse.value = UIState.Success(sampleListComic)
             } else {
-                _exploreResponse.value = UIState.Error(0,"Error")
+                _exploreResponse.value = UIState.Error(0, "Error")
             }
         }
-
     }
 }

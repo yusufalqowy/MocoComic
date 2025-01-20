@@ -1,9 +1,14 @@
 package yu.desk.mococomic.utils
 
 sealed class UIState<T> {
-    class Success<T>(val data: T) : UIState<T>()
+    class Success<T>(
+        val data: T,
+    ) : UIState<T>()
 
-    class Error<T>(val code: Int? = null, val message: String) : UIState<T>()
+    class Error<T>(
+        val code: Int? = null,
+        val message: String,
+    ) : UIState<T>()
 
     class Loading<T> : UIState<T>()
 

@@ -11,16 +11,21 @@ class ComicDiffCallback(
 
     override fun getNewListSize(): Int = newList.size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areItemsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
         return if (oldItem is Comic && newItem is Comic) oldItem.slug == newItem.slug else oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areContentsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
         return oldItem == newItem
     }
-
 }

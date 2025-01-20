@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -21,7 +20,6 @@ import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.google.android.material.sidesheet.SideSheetBehavior
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
@@ -30,15 +28,14 @@ import yu.desk.mococomic.domain.model.Chapter
 import yu.desk.mococomic.presentation.adapter.ListChapterAdapter
 import yu.desk.mococomic.presentation.adapter.ListImageChapterAdapter
 import yu.desk.mococomic.presentation.component.ComicReaderBottomSheet
-import yu.desk.mococomic.presentation.component.ComicReaderSideSheet
 import yu.desk.mococomic.utils.apiResponseHandler
-import yu.desk.mococomic.utils.close
 import yu.desk.mococomic.utils.navigateWithAnimation
 import yu.desk.mococomic.utils.setVisible
-import yu.desk.mococomic.utils.toggle
 import kotlin.math.abs
 
-class ComicReaderFragment : Fragment(), ComicReaderListener {
+class ComicReaderFragment :
+    Fragment(),
+    ComicReaderListener {
     lateinit var binding: FragmentComicReaderBinding
     private val viewModel: ComicViewModel by navGraphViewModels(R.id.comicNavigation)
     private val navArgs: ComicReaderFragmentArgs by navArgs()
@@ -51,7 +48,8 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentComicReaderBinding.inflate(inflater, container, false)
@@ -74,11 +72,13 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewListener()
-
     }
 
     private fun initView() {
@@ -124,7 +124,6 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
                 viewModel.getChapterDetail()
             }
 
-
             swipeRefresh.setOnRefreshListener {
                 viewModel.getChapterDetail()
             }
@@ -137,42 +136,48 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
                 bottomSheet.show()
             }
 
-            rvImageChapter.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-                private var startX = 0f
-                private var startY = 0f
-                private val clickThreshold = 10
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    when (e.action) {
-                        MotionEvent.ACTION_UP -> {
-                            val endX = e.x
-                            val endY = e.y
-                            val deltaX = abs(endX - startX)
-                            val deltaY = abs(endY - startY)
+            rvImageChapter.addOnItemTouchListener(
+                object : RecyclerView.OnItemTouchListener {
+                    private var startX = 0f
+                    private var startY = 0f
+                    private val clickThreshold = 10
 
-                            if (deltaX <= clickThreshold && deltaY <= clickThreshold) {
-                                // Click detected
-                                rv.performClick()
+                    override fun onInterceptTouchEvent(
+                        rv: RecyclerView,
+                        e: MotionEvent,
+                    ): Boolean {
+                        when (e.action) {
+                            MotionEvent.ACTION_UP -> {
+                                val endX = e.x
+                                val endY = e.y
+                                val deltaX = abs(endX - startX)
+                                val deltaY = abs(endY - startY)
+
+                                if (deltaX <= clickThreshold && deltaY <= clickThreshold) {
+                                    // Click detected
+                                    rv.performClick()
+                                }
+                            }
+
+                            MotionEvent.ACTION_DOWN -> {
+                                startX = e.x
+                                startY = e.y
                             }
                         }
-
-                        MotionEvent.ACTION_DOWN -> {
-                            startX = e.x
-                            startY = e.y
-                        }
+                        return false
                     }
-                    return false
+
+                    override fun onTouchEvent(
+                        rv: RecyclerView,
+                        e: MotionEvent,
+                    ) {
+                    }
+
+                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+                    }
                 }
-
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-                }
-
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-                }
-
-            })
-
+            )
         }
-
     }
 
     private fun onError() {
@@ -192,48 +197,52 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
             binding.rvImageChapter.apply {
                 setHasFixedSize(true)
                 setItemViewCacheSize(5)
-                val item = listOf(
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/00.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/01.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/02.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/03.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/04.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/05.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/06.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/07.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/08.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/09.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/10.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/11.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/12.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/13.jpg",
-                    "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/14.jpg"
-                )
-                adapter = ListImageChapterAdapter().apply {
-                    setHasFixedSize(true)
-                    setItem(item)
-                }
+                val item =
+                    listOf(
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/00.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/01.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/02.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/03.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/04.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/05.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/06.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/07.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/08.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/09.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/10.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/11.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/12.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/13.jpg",
+                        "https://cdn.uqni.net/images/7/solo-resurrection/chapter-35/14.jpg"
+                    )
+                adapter =
+                    ListImageChapterAdapter().apply {
+                        setHasFixedSize(true)
+                        setItem(item)
+                    }
             }
             navView.rvListChapter.apply {
                 setHasFixedSize(true)
-                adapter = ListChapterAdapter().apply {
-                    setItem(viewModel.getChapterList())
-                    viewModel.chapter?.let {
-                        setSelectedChapter(it)
+                adapter =
+                    ListChapterAdapter().apply {
+                        setItem(viewModel.getChapterList())
+                        viewModel.chapter?.let {
+                            setSelectedChapter(it)
+                        }
+                        setOnChapterClickListener { item ->
+                            val direction = ComicReaderFragmentDirections.actionComicReaderSelf(item)
+                            findNavController().navigateWithAnimation(
+                                direction,
+                                navOptions =
+                                    navOptions {
+                                        popUpTo(R.id.comicDetail) {
+                                            inclusive = true
+                                        }
+                                        launchSingleTop = true
+                                    }
+                            )
+                        }
                     }
-                    setOnChapterClickListener { item ->
-                        val direction = ComicReaderFragmentDirections.actionComicReaderSelf(item)
-                        findNavController().navigateWithAnimation(
-                            direction,
-                            navOptions = navOptions {
-                                popUpTo(R.id.comicDetail) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            },
-                        )
-                    }
-                }
             }
         }
     }
@@ -257,22 +266,20 @@ class ComicReaderFragment : Fragment(), ComicReaderListener {
     }
 
     override fun onDrawerClickListener() {
-        if(this::binding.isInitialized){
+        if (this::binding.isInitialized) {
             binding.drawer.open()
             val position = viewModel.getChapterList().indexOf(viewModel.chapter)
-            binding.navView.rvListChapter.layoutManager?.scrollToPositionCenter(position)
+            binding.navView.rvListChapter.layoutManager
+                ?.scrollToPositionCenter(position)
         }
     }
 
     override fun onBeforeClickListener(chapter: Chapter) {
-
     }
 
     override fun onNextClickListener(chapter: Chapter) {
-
     }
 
     override fun onFavoriteClickListener(chapter: Chapter) {
-
     }
 }

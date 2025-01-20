@@ -1,18 +1,22 @@
 [versions]
 agp = "8.7.3"
+browser = "1.8.0"
 coilNetworkOkhttp = "3.0.4"
 coil = "3.0.4"
 coreSplashscreen = "1.0.1"
 credentials = "1.3.0"
+firebaseBom = "33.8.0"
 googleid = "1.1.1"
-gson = "2.10.1"
-kotlin = "1.9.24"
+gson = "2.11.0"
+daggerHilt = "2.51.1"
+kotlin = "2.0.10"
+ktlint = "12.1.2"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
-listitem = "0.6.1"
+chucker = "4.1.0"
 material = "1.12.0"
 recyclerview = "1.4.0"
 constraintlayout = "2.2.0"
@@ -26,23 +30,31 @@ shimmer = "0.5.0"
 swiperefreshlayout = "1.2.0-alpha01"
 window = "1.3.0"
 windowCoreAndroid = "1.3.0"
-legacySupportV4 = "1.0.0"
+ksp = "2.0.10-1.0.24"
 
 [libraries]
+androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-listitem = { module = "net.nicbell.material-lists:listitem", version.ref = "listitem" }
+chucker-library = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-library-no-op = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -55,11 +67,13 @@ androidx-window = { group = "androidx.window", name = "window", version.ref = "w
 androidx-window-core-android = { group = "androidx.window", name = "window-core-android", version.ref = "windowCoreAndroid" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
-androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidx-navigation-safeargs = {id = "androidx.navigation.safeargs", version = "2.8.5" }
 kotlin-parcelize = { id = "kotlin-parcelize" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt"}
+devtools-ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 

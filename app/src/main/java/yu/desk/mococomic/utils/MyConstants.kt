@@ -1,7 +1,6 @@
 package yu.desk.mococomic.utils
 
 object MyConstants {
-
     const val COMIC_DETAIL = """
     {
         "title": "Return of the Sword God-Rank Civil Servant",

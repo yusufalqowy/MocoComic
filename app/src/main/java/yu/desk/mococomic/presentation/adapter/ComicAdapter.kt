@@ -13,7 +13,9 @@ import yu.desk.mococomic.utils.ComicType
 import yu.desk.mococomic.utils.loadImage
 import yu.desk.mococomic.utils.setVisible
 
-class ComicAdapter(private var visibleItem: Float = 0f) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ComicAdapter(
+    private var visibleItem: Float = 0f,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val COMIC_TYPE = 1
         private const val COMIC_SHIMMER_TYPE = 2
@@ -22,12 +24,20 @@ class ComicAdapter(private var visibleItem: Float = 0f) : RecyclerView.Adapter<R
     private var listItems: List<Any> = emptyList()
     private var onItemClickListener: ((Comic) -> Unit)? = null
 
-    class ComicViewHolder(val binding: ItemComicBinding) : RecyclerView.ViewHolder(binding.root)
-    class ShimmerViewHolder(val binding: ItemComicShimmerBinding) : RecyclerView.ViewHolder(binding.root)
+    class ComicViewHolder(
+        val binding: ItemComicBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
+
+    class ShimmerViewHolder(
+        val binding: ItemComicShimmerBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int = if (listItems[position] is Comic) COMIC_TYPE else COMIC_SHIMMER_TYPE
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         val binding =
             ItemComicBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val shimmerBinding = ItemComicShimmerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -45,7 +55,10 @@ class ComicAdapter(private var visibleItem: Float = 0f) : RecyclerView.Adapter<R
         return if (viewType == COMIC_TYPE) ComicViewHolder(binding) else ShimmerViewHolder(shimmerBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         val item = listItems[position]
         if (holder is ComicViewHolder && item is Comic) {
             onBind(holder.binding, item)
@@ -91,5 +104,4 @@ class ComicAdapter(private var visibleItem: Float = 0f) : RecyclerView.Adapter<R
         listItems = items
         diffResult.dispatchUpdatesTo(this)
     }
-
 }

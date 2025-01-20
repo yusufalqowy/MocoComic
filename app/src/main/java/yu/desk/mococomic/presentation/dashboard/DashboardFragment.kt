@@ -1,13 +1,15 @@
 package yu.desk.mococomic.presentation.dashboard
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.viewModels
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentDashboardBinding
 import yu.desk.mococomic.presentation.dashboard.explore.ExploreFragment
@@ -17,23 +19,24 @@ import yu.desk.mococomic.presentation.dashboard.profile.ProfileFragment
 
 class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
-    private val viewModel by viewModels<DashboardViewModel>()
     private var dashboardHome = HomeFragment()
     private var dashboardExplore = ExploreFragment()
     private var dashboardFavorite = FavoriteFragment()
     private var dashboardProfile = ProfileFragment()
     private var activeFragmentTag: String = HomeFragment.TAG
     private val activeFragmentKey = "ACTIVE_FRAGMENT"
-
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        childFragmentManager.beginTransaction().apply {
-            addFragment(dashboardHome, HomeFragment.TAG)
-            addFragment(dashboardExplore, ExploreFragment.TAG)
-            addFragment(dashboardFavorite, FavoriteFragment.TAG)
-            addFragment(dashboardProfile, ProfileFragment.TAG)
-        }.commitNow()
+        childFragmentManager
+            .beginTransaction()
+            .apply {
+                addFragment(dashboardHome, HomeFragment.TAG)
+                addFragment(dashboardExplore, ExploreFragment.TAG)
+                addFragment(dashboardFavorite, FavoriteFragment.TAG)
+                addFragment(dashboardProfile, ProfileFragment.TAG)
+            }.commitNow()
         savedInstanceState?.let {
             activeFragmentTag = it.getString(activeFragmentKey, HomeFragment.TAG)
         }
@@ -45,22 +48,21 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
-        Log.e(
-            "DashboardFragment", """
-            ${childFragmentManager.fragments}
-        """.trimIndent()
-        )
     }
 
     private fun initView() {
@@ -72,7 +74,6 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initListener() {
-
         binding.apply {
             bottomNavView?.setOnItemSelectedListener {
                 if (it.itemId == bottomNavView.selectedItemId) return@setOnItemSelectedListener false
@@ -83,10 +84,31 @@ class DashboardFragment : Fragment() {
                 return@setOnItemSelectedListener onSelectedItemListener(it.itemId)
             }
         }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (activeFragmentTag != HomeFragment.TAG) {
+                        childFragmentManager.beginTransaction().navigateTo(dashboardHome)
+                        activeFragmentTag = HomeFragment.TAG
+                        binding.bottomNavView?.selectedItemId = R.id.dashboardHome
+                        binding.navView?.selectedItemId = R.id.dashboardHome
+                    } else {
+                        if (doubleBackToExitPressedOnce) {
+                            activity?.finishAffinity()
+                        } else {
+                            doubleBackToExitPressedOnce = true
+                            Toast.makeText(context, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+                            Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+                        }
+                    }
+                }
+            }
+        )
     }
 
-    private fun onSelectedItemListener(itemId: Int): Boolean {
-        return when (itemId) {
+    private fun onSelectedItemListener(itemId: Int): Boolean =
+        when (itemId) {
             R.id.dashboardHome -> {
                 childFragmentManager.beginTransaction().navigateTo(dashboardHome)
                 activeFragmentTag = HomeFragment.TAG
@@ -113,24 +135,36 @@ class DashboardFragment : Fragment() {
 
             else -> false
         }
-    }
 
-    private fun FragmentTransaction.navigateTo(fragment: Fragment) = this.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right).hide(findFragmentByTag(activeFragmentTag)).show(fragment).commit()
-    private fun FragmentTransaction.addFragment(fragment: Fragment, tag: String): FragmentTransaction {
+    private fun FragmentTransaction.navigateTo(fragment: Fragment) =
+        this
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            ).hide(findFragmentByTag(activeFragmentTag))
+            .show(fragment)
+            .commit()
+
+    private fun FragmentTransaction.addFragment(
+        fragment: Fragment,
+        tag: String,
+    ): FragmentTransaction {
         val frag = childFragmentManager.findFragmentByTag(tag)
         if (frag != null) this.remove(frag)
         this.add(R.id.navHostDashboard, fragment, tag).hide(fragment)
         return this
     }
 
-    private fun findFragmentByTag(tag: String) = childFragmentManager.findFragmentByTag(tag)  ?: dashboardHome
+    private fun findFragmentByTag(tag: String) = childFragmentManager.findFragmentByTag(tag) ?: dashboardHome
 
-    private fun getSelectedItemId() = when (activeFragmentTag) {
-        HomeFragment.TAG -> R.id.dashboardHome
-        ExploreFragment.TAG -> R.id.dashboardExplore
-        FavoriteFragment.TAG -> R.id.dashboardFavorite
-        ProfileFragment.TAG -> R.id.dashboardProfile
-        else -> R.id.dashboardHome
-    }
-
+    private fun getSelectedItemId() =
+        when (activeFragmentTag) {
+            HomeFragment.TAG -> R.id.dashboardHome
+            ExploreFragment.TAG -> R.id.dashboardExplore
+            FavoriteFragment.TAG -> R.id.dashboardFavorite
+            ProfileFragment.TAG -> R.id.dashboardProfile
+            else -> R.id.dashboardHome
+        }
 }

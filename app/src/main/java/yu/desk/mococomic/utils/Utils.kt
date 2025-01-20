@@ -59,8 +59,10 @@ fun Context.getWindowSizeClasses(): WindowSizeClass {
 }
 
 fun Context.isSizeMobile() = getWindowSizeClasses().windowWidthSizeClass == WindowWidthSizeClass.COMPACT
-fun Context.isSizeTablet() = getWindowSizeClasses().windowWidthSizeClass == WindowWidthSizeClass.MEDIUM || getWindowSizeClasses().windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
 
+fun Context.isSizeTablet() =
+    getWindowSizeClasses().windowWidthSizeClass == WindowWidthSizeClass.MEDIUM ||
+        getWindowSizeClasses().windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
 
 fun View.setVisible(visible: Boolean) {
     visibility = if (visible) View.VISIBLE else View.GONE
@@ -70,11 +72,17 @@ fun View.setInvisible(invisible: Boolean) {
     visibility = if (invisible) View.INVISIBLE else View.VISIBLE
 }
 
-fun Fragment.getDrawableResource(@DrawableRes id: Int): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+fun Fragment.getDrawableResource(
+    @DrawableRes id: Int,
+): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
 
-fun Activity.getDrawableResource(@DrawableRes id: Int): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+fun Activity.getDrawableResource(
+    @DrawableRes id: Int,
+): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
 
-fun Context.getDrawableResource(@DrawableRes id: Int): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+fun Context.getDrawableResource(
+    @DrawableRes id: Int,
+): Drawable? = ResourcesCompat.getDrawable(resources, id, null)
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
@@ -98,21 +106,26 @@ fun TextView.isTextOverflowing(isOverflow: (Boolean) -> Unit) {
     }
 }
 
-
 fun Context.getDisplayMetrics(): DisplayMetrics = this.resources.displayMetrics
 
-fun ImageView.loadImage(url: String, enableLoading: Boolean = true) {
-    this.setBackgroundColor(MaterialColors.getColor(this.context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY))
+fun ImageView.loadImage(
+    url: String,
+    enableLoading: Boolean = true,
+) {
+    this.setBackgroundColor(
+        MaterialColors.getColor(this.context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY)
+    )
     this.load(url) {
         crossfade(true)
         if (enableLoading) {
-            val drawable = CircularProgressIndicator(this@loadImage.context).apply {
-                indicatorInset = 16.dp
-                indicatorSize = 8.dp
-                trackCornerRadius = 4.dp
-                trackThickness = 1.dp
-                isIndeterminate = true
-            }
+            val drawable =
+                CircularProgressIndicator(this@loadImage.context).apply {
+                    indicatorInset = 16.dp
+                    indicatorSize = 8.dp
+                    trackCornerRadius = 4.dp
+                    trackThickness = 1.dp
+                    isIndeterminate = true
+                }
             placeholder(drawable.indeterminateDrawable)
         }
     }
@@ -126,11 +139,12 @@ fun ImageView.scaleCropTop() {
     val drawableWidth = drawable.intrinsicWidth
     val drawableHeight = drawable.intrinsicHeight
 
-    val scale = if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
-        viewHeight.toFloat() / drawableHeight.toFloat()
-    } else {
-        viewWidth.toFloat() / drawableWidth.toFloat()
-    }
+    val scale =
+        if (drawableWidth * viewHeight > drawableHeight * viewWidth) {
+            viewHeight.toFloat() / drawableHeight.toFloat()
+        } else {
+            viewWidth.toFloat() / drawableWidth.toFloat()
+        }
     matrix.setScale(scale, scale)
     imageMatrix = matrix
 }
@@ -145,7 +159,14 @@ fun BottomSheetBehavior<ConstraintLayout>.close() {
 
 fun BottomSheetBehavior<ConstraintLayout>.toggle() {
     Log.e("STATE", state.toString())
-    state = if (state == BottomSheetBehavior.STATE_EXPANDED) BottomSheetBehavior.STATE_HIDDEN else BottomSheetBehavior.STATE_EXPANDED
+    state =
+        if (state ==
+            BottomSheetBehavior.STATE_EXPANDED
+        ) {
+            BottomSheetBehavior.STATE_HIDDEN
+        } else {
+            BottomSheetBehavior.STATE_EXPANDED
+        }
 }
 
 fun SideSheetBehavior<ConstraintLayout>.open() {
@@ -157,84 +178,105 @@ fun SideSheetBehavior<ConstraintLayout>.close() {
 }
 
 fun SideSheetBehavior<ConstraintLayout>.toggle() {
-    state = if (state == SideSheetBehavior.STATE_EXPANDED) SideSheetBehavior.STATE_HIDDEN else SideSheetBehavior.STATE_EXPANDED
+    state =
+        if (state ==
+            SideSheetBehavior.STATE_EXPANDED
+        ) {
+            SideSheetBehavior.STATE_HIDDEN
+        } else {
+            SideSheetBehavior.STATE_EXPANDED
+        }
 }
 
-fun RecyclerView.initRecyclerView(hasFixedSize: Boolean = true, layoutManger: RecyclerView.LayoutManager? = this.layoutManager, adapter: (RecyclerView) -> RecyclerView.Adapter<*>) {
+fun RecyclerView.initRecyclerView(
+    hasFixedSize: Boolean = true,
+    layoutManger: RecyclerView.LayoutManager? = this.layoutManager,
+    adapter: (RecyclerView) -> RecyclerView.Adapter<*>,
+) {
     this.setHasFixedSize(hasFixedSize)
     this.layoutManager = layoutManger
     this.adapter = adapter.invoke(this)
 }
 
-fun Fragment.findNavController(@IdRes navId: Int) = requireActivity().findNavController(navId)
+fun Fragment.findNavController(
+    @IdRes navId: Int,
+) = requireActivity().findNavController(navId)
 
-fun NavController.navigateWithAnimation(@IdRes id: Int, args: Bundle? = null, navOptions: NavOptions? = null) {
-    val newNavOptions = navOptions {
-        navOptions?.let {
-            launchSingleTop = it.shouldLaunchSingleTop()
-            restoreState = it.shouldRestoreState()
-            if (it.popUpToRoute != null) {
-                popUpTo(it.popUpToRoute!!) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
-                }
-            } else if (it.popUpToRouteClass != null) {
-                popUpTo(it.popUpToRouteClass!!)
-            } else if (it.popUpToRouteObject != null && it.popUpToRouteObject !is Int) {
-                popUpTo(it.popUpToRouteObject!!) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
-                }
-            } else {
-                popUpTo(popUpToId) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
+fun NavController.navigateWithAnimation(
+    @IdRes id: Int,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+) {
+    val newNavOptions =
+        navOptions {
+            navOptions?.let {
+                launchSingleTop = it.shouldLaunchSingleTop()
+                restoreState = it.shouldRestoreState()
+                if (it.popUpToRoute != null) {
+                    popUpTo(it.popUpToRoute!!) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
+                } else if (it.popUpToRouteClass != null) {
+                    popUpTo(it.popUpToRouteClass!!)
+                } else if (it.popUpToRouteObject != null && it.popUpToRouteObject !is Int) {
+                    popUpTo(it.popUpToRouteObject!!) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
+                } else {
+                    popUpTo(popUpToId) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
                 }
             }
+            anim {
+                enter = yu.desk.mococomic.R.anim.slide_in_right
+                exit = yu.desk.mococomic.R.anim.slide_out_left
+                popEnter = yu.desk.mococomic.R.anim.slide_in_left
+                popExit = yu.desk.mococomic.R.anim.slide_out_right
+            }
         }
-        anim {
-            enter = yu.desk.mococomic.R.anim.slide_in_right
-            exit = yu.desk.mococomic.R.anim.slide_out_left
-            popEnter = yu.desk.mococomic.R.anim.slide_in_left
-            popExit = yu.desk.mococomic.R.anim.slide_out_right
-        }
-    }
 
     this.navigate(id, args, newNavOptions)
-
 }
 
-fun NavController.navigateWithAnimation(directions: NavDirections, navOptions: NavOptions? = null) {
-    val newNavOptions = navOptions {
-        navOptions?.let {
-            launchSingleTop = it.shouldLaunchSingleTop()
-            restoreState = it.shouldRestoreState()
-            if (it.popUpToRoute != null) {
-                popUpTo(it.popUpToRoute!!) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
-                }
-            } else if (it.popUpToRouteClass != null) {
-                popUpTo(it.popUpToRouteClass!!)
-            } else if (it.popUpToRouteObject != null) {
-                popUpTo(it.popUpToRouteObject!!) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
-                }
-            } else {
-                popUpTo(popUpToId) {
-                    inclusive = it.isPopUpToInclusive()
-                    saveState = it.shouldPopUpToSaveState()
+fun NavController.navigateWithAnimation(
+    directions: NavDirections,
+    navOptions: NavOptions? = null,
+) {
+    val newNavOptions =
+        navOptions {
+            navOptions?.let {
+                launchSingleTop = it.shouldLaunchSingleTop()
+                restoreState = it.shouldRestoreState()
+                if (it.popUpToRoute != null) {
+                    popUpTo(it.popUpToRoute!!) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
+                } else if (it.popUpToRouteClass != null) {
+                    popUpTo(it.popUpToRouteClass!!)
+                } else if (it.popUpToRouteObject != null) {
+                    popUpTo(it.popUpToRouteObject!!) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
+                } else {
+                    popUpTo(popUpToId) {
+                        inclusive = it.isPopUpToInclusive()
+                        saveState = it.shouldPopUpToSaveState()
+                    }
                 }
             }
+            anim {
+                enter = yu.desk.mococomic.R.anim.slide_in_right
+                exit = yu.desk.mococomic.R.anim.slide_out_left
+                popEnter = yu.desk.mococomic.R.anim.slide_in_left
+                popExit = yu.desk.mococomic.R.anim.slide_out_right
+            }
         }
-        anim {
-            enter = yu.desk.mococomic.R.anim.slide_in_right
-            exit = yu.desk.mococomic.R.anim.slide_out_left
-            popEnter = yu.desk.mococomic.R.anim.slide_in_left
-            popExit = yu.desk.mococomic.R.anim.slide_out_right
-        }
-    }
     navigate(directions, newNavOptions)
 }
 
@@ -247,4 +289,3 @@ fun View.loadingShimmer(show: Boolean = true) {
         }
     }
 }
-

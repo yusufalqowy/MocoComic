@@ -10,16 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.databinding.ActivityMainBinding
-import java.time.Instant
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
@@ -28,15 +25,15 @@ class MainActivity : AppCompatActivity() {
         val splash = installSplashScreen()
         enableEdgeToEdge(
             statusBarStyle =
-            SystemBarStyle.auto(
-                Color.TRANSPARENT,
-                Color.TRANSPARENT,
-            ),
+                SystemBarStyle.auto(
+                    Color.TRANSPARENT,
+                    Color.TRANSPARENT
+                ),
             navigationBarStyle =
-            SystemBarStyle.auto(
-                Color.TRANSPARENT,
-                Color.TRANSPARENT,
-            ),
+                SystemBarStyle.auto(
+                    Color.TRANSPARENT,
+                    Color.TRANSPARENT
+                )
         )
         super.onCreate(savedInstanceState)
         var isWaiting = true
@@ -46,14 +43,12 @@ class MainActivity : AppCompatActivity() {
             isWaiting = false
         }
 
-        splash.setKeepOnScreenCondition{
+        splash.setKeepOnScreenCondition {
             isWaiting
         }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.navHostMain)

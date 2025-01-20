@@ -1,9 +1,21 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.ktlint)
 }
+
+val props =
+    Properties().apply {
+        load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+    }
 
 android {
     namespace = "yu.desk.mococomic"
@@ -64,33 +76,71 @@ android {
     }
 }
 
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+
+ktlint {
+    version = "1.5.0"
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.HTML)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.annotation)
+
+    implementation(libs.androidx.window)
+    implementation(libs.androidx.window.core.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.listitem)
-    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.swiperefreshlayout)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Credential Manager
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
-    implementation(libs.androidx.window)
-    implementation(libs.androidx.window.core.android)
-    implementation(libs.coil)
-    implementation(libs.coil.network.okhttp)
-    implementation(libs.gson)
-    implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.shimmer)
-    implementation(libs.retrofit)
-//    implementation(libs.androidx.legacy.support.v4)
+
+    // Splash screen
     implementation(libs.androidx.core.splashscreen)
 
+    // Navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // Coil
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
+
+    // Networking
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+
+    // Network Interceptor
+    debugImplementation(libs.chucker.library)
+    releaseImplementation(libs.chucker.library.no.op)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+    // Shimmer Loading
+    implementation(libs.shimmer)
+
+    // Android Browser
+    implementation(libs.androidx.browser)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
