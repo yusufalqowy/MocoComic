@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="?colorSurface"
+	android:fitsSystemWindows="true"
+	android:orientation="vertical">
+
+	<com.google.android.material.appbar.MaterialToolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:navigationIcon="@drawable/ic_arrow_left"
+		app:navigationIconTint="?colorOnSurface"
+		app:title="@string/text_settings" />
+
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemLanguage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:title="@string/text_language" />
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemBiometric"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:subtitle="@string/text_off"
+		app:title="@string/text_biometric_security">
+
+		<com.google.android.material.materialswitch.MaterialSwitch
+			android:id="@+id/swBiometric"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end|center_vertical" />
+	</yu.desk.mococomic.presentation.component.ListItemView>
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemEnableBlockedComic"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:subtitle="@string/text_off"
+		app:title="@string/text_enable_blocked_comic">
+
+		<com.google.android.material.materialswitch.MaterialSwitch
+			android:id="@+id/swShowBlockedComic"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end|center_vertical" />
+	</yu.desk.mococomic.presentation.component.ListItemView>
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemColorScheme"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:subtitle="Dynamic"
+		app:title="@string/text_color_scheme"
+		app:trailingIcon="@drawable/bg_circle_menu"
+		app:trailingIconTint="?colorPrimary" />
+
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemAppTheme"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:subtitle="@string/text_follow_by_system"
+		app:title="@string/text_app_theme"
+		app:trailingIcon="@drawable/ic_theme_system" />
+
+
+</LinearLayout>

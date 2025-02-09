@@ -7,26 +7,26 @@
 
     <fragment
         android:id="@+id/dashboardHome"
-        android:name="yu.desk.mococomic.presentation.dashboard.home.HomeFragment"
+        android:name="yu.desk.mococomic.presentation.dashboard.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/dashboardExplore"
-        android:name="yu.desk.mococomic.presentation.dashboard.explore.ExploreFragment"
+        android:name="yu.desk.mococomic.presentation.dashboard.ExploreFragment"
         android:label="@string/menu_explore"
-        tools:layout="@layout/fragment_explore"/>
+        tools:layout="@layout/fragment_explore" />
 
     <fragment
         android:id="@+id/dashboardFavorite"
-        android:name="yu.desk.mococomic.presentation.dashboard.favorite.FavoriteFragment"
+        android:name="yu.desk.mococomic.presentation.dashboard.FavoriteFragment"
         android:label="@string/menu_favorite"
-        tools:layout="@layout/fragment_favorite"/>
+        tools:layout="@layout/fragment_favorite" />
 
 
     <fragment
         android:id="@+id/dashboardProfile"
-        android:name="yu.desk.mococomic.presentation.dashboard.profile.ProfileFragment"
+        android:name="yu.desk.mococomic.presentation.dashboard.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 

@@ -1,27 +1,45 @@
 <resources>
-    <declare-styleable name="ErrorView">
-        <attr name="icon" format="reference" />
-        <attr name="iconTint" format="color" />
-        <attr name="iconSize" format="dimension" />
-        <attr name="title" format="string" />
-        <attr name="toolbarTitle" format="string" />
-        <attr name="description" format="string" />
-        <attr name="showRetryButton" format="boolean" />
-        <attr name="showToolbar" format="boolean" />
-    </declare-styleable>
+	<attr name="title" format="string" localization="suggested" />
 
-    <declare-styleable name="ShimmerContainer">
-        <attr name="shapeAppearance" format="reference" />
-        <attr name="shapeAppearanceOverlay" format="reference" />
-        <attr name="shimmerWidth" format="dimension" />
-        <attr name="shimmerHeight" format="dimension" />
-        <attr name="shimmerWidthPercent" format="float" />
-        <attr name="shimmerHeightPercent" format="float" />
-    </declare-styleable>
-    <declare-styleable name="ListItemView">
-        <attr name="label" format="string" />
-        <attr name="enableDefaultPadding" format="boolean" />
-        <attr name="leadingIcon" format="reference" />
-        <attr name="trailingIcon" format="reference" />
-    </declare-styleable>
+	<declare-styleable name="AlertView">
+		<attr name="icon" format="reference" />
+		<attr name="iconTint" format="color" />
+		<attr name="iconSize" format="dimension" />
+		<attr name="title" />
+		<attr name="toolbarTitle" format="string" localization="suggested" />
+		<attr name="description" format="string" localization="suggested" />
+		<attr name="actionButtonText" format="string" localization="suggested" />
+	</declare-styleable>
+
+	<declare-styleable name="ShimmerContainer">
+		<attr name="shapeAppearance" format="reference" />
+		<attr name="shapeAppearanceOverlay" format="reference" />
+		<attr name="shimmerMarginStart" format="dimension" />
+		<attr name="shimmerMarginEnd" format="dimension" />
+		<attr name="shimmerMarginTop" format="dimension" />
+		<attr name="shimmerMarginBottom" format="dimension" />
+		<attr name="shimmerWidth" format="dimension" />
+		<attr name="shimmerHeight" format="dimension" />
+		<attr name="shimmerWidthPercent" format="float" />
+		<attr name="shimmerHeightPercent" format="float" />
+	</declare-styleable>
+	<declare-styleable name="ListItemView">
+		<attr name="title" localization="suggested" />
+		<attr name="subtitle" format="string" localization="suggested" />
+		<attr name="leadingIcon" format="reference" />
+		<attr name="leadingImage" format="reference" />
+		<attr name="trailingIcon" format="reference" />
+		<attr name="leadingIconTint" format="color" />
+		<attr name="trailingIconTint" format="color" />
+	</declare-styleable>
+
+	<declare-styleable name="StateView">
+		<attr name="state" format="enum">
+			<enum name="LOADING" value="0" />
+			<enum name="ERROR" value="1" />
+			<enum name="ALERT" value="2" />
+			<enum name="EMPTY" value="3" />
+			<enum name="CONTENT" value="4" />
+		</attr>
+	</declare-styleable>
 </resources>

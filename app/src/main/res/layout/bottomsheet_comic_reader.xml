@@ -27,7 +27,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginHorizontal="@dimen/dp_16"
-        android:src="@color/gray_400"
+        android:src="?colorOutlineVariant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dragHandle"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />

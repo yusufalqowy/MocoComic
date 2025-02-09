@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MocoComic" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowSplashScreenBackground">?colorSurface</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
-        <item name="android:windowSplashScreenAnimationDuration">1000</item>
-        <item name="postSplashScreenTheme">@style/Theme.MocoComic</item>
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
-
-    </style>
+	<style name="Theme.MocoComic" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
+		<!-- Customize your theme here. -->
+		<item name="android:windowSplashScreenBackground">?colorSurface</item>
+		<item name="android:windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
+		<item name="android:windowSplashScreenAnimationDuration">1000</item>
+		<item name="postSplashScreenTheme">@style/Theme.MocoComic</item>
+		<item name="android:windowSplashScreenBehavior">icon_preferred</item>
+	</style>
 </resources>

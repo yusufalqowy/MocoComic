@@ -1,35 +1,348 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.MocoComic" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
-        <!-- Primary brand color.
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        &lt;!&ndash; Secondary brand color. &ndash;&gt;
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>-->
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <!-- Customize your theme here. -->
+<resources>
+	<!-- Base application theme. -->
+	<style name="Theme.MocoComic" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar" />
 
-    </style>
+	<style name="Theme.MocoComic.Green" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/green_primary</item>
+		<item name="colorOnPrimary">@color/green_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/green_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/green_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/green_secondary</item>
+		<item name="colorOnSecondary">@color/green_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/green_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/green_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/green_tertiary</item>
+		<item name="colorOnTertiary">@color/green_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/green_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/green_onTertiaryContainer</item>
+		<item name="colorError">@color/green_error</item>
+		<item name="colorOnError">@color/green_onError</item>
+		<item name="colorErrorContainer">@color/green_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/green_onErrorContainer</item>
+		<item name="android:colorBackground">@color/green_background</item>
+		<item name="colorOnBackground">@color/green_onBackground</item>
+		<item name="colorSurface">@color/green_surface</item>
+		<item name="colorOnSurface">@color/green_onSurface</item>
+		<item name="colorSurfaceVariant">@color/green_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/green_onSurfaceVariant</item>
+		<item name="colorOutline">@color/green_outline</item>
+		<item name="colorOutlineVariant">@color/green_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/green_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/green_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/green_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/green_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/green_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/green_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/green_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/green_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/green_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/green_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/green_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/green_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/green_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/green_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/green_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/green_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/green_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/green_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/green_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/green_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/green_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/green_surfaceContainerHighest</item>
+	</style>
 
-    <style name="Theme.MocoComic.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+	<style name="Theme.MocoComic.Purple" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/purple_primary</item>
+		<item name="colorOnPrimary">@color/purple_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/purple_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/purple_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/purple_secondary</item>
+		<item name="colorOnSecondary">@color/purple_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/purple_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/purple_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/purple_tertiary</item>
+		<item name="colorOnTertiary">@color/purple_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/purple_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/purple_onTertiaryContainer</item>
+		<item name="colorError">@color/purple_error</item>
+		<item name="colorOnError">@color/purple_onError</item>
+		<item name="colorErrorContainer">@color/purple_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/purple_onErrorContainer</item>
+		<item name="android:colorBackground">@color/purple_background</item>
+		<item name="colorOnBackground">@color/purple_onBackground</item>
+		<item name="colorSurface">@color/purple_surface</item>
+		<item name="colorOnSurface">@color/purple_onSurface</item>
+		<item name="colorSurfaceVariant">@color/purple_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/purple_onSurfaceVariant</item>
+		<item name="colorOutline">@color/purple_outline</item>
+		<item name="colorOutlineVariant">@color/purple_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/purple_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/purple_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/purple_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/purple_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/purple_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/purple_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/purple_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/purple_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/purple_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/purple_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/purple_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/purple_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/purple_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/purple_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/purple_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/purple_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/purple_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/purple_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/purple_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/purple_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/purple_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/purple_surfaceContainerHighest</item>
+	</style>
 
-    <style name="Theme.MocoComic.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+	<style name="Theme.MocoComic.Blue" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/blue_primary</item>
+		<item name="colorOnPrimary">@color/blue_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/blue_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/blue_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/blue_secondary</item>
+		<item name="colorOnSecondary">@color/blue_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/blue_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/blue_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/blue_tertiary</item>
+		<item name="colorOnTertiary">@color/blue_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/blue_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/blue_onTertiaryContainer</item>
+		<item name="colorError">@color/blue_error</item>
+		<item name="colorOnError">@color/blue_onError</item>
+		<item name="colorErrorContainer">@color/blue_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/blue_onErrorContainer</item>
+		<item name="android:colorBackground">@color/blue_background</item>
+		<item name="colorOnBackground">@color/blue_onBackground</item>
+		<item name="colorSurface">@color/blue_surface</item>
+		<item name="colorOnSurface">@color/blue_onSurface</item>
+		<item name="colorSurfaceVariant">@color/blue_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/blue_onSurfaceVariant</item>
+		<item name="colorOutline">@color/blue_outline</item>
+		<item name="colorOutlineVariant">@color/blue_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/blue_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/blue_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/blue_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/blue_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/blue_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/blue_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/blue_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/blue_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/blue_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/blue_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/blue_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/blue_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/blue_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/blue_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/blue_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/blue_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/blue_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/blue_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/blue_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/blue_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/blue_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/blue_surfaceContainerHighest</item>
+	</style>
 
-    <style name="Theme.MocoComic.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+	<style name="Theme.MocoComic.Yellow" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/yellow_primary</item>
+		<item name="colorOnPrimary">@color/yellow_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/yellow_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/yellow_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/yellow_secondary</item>
+		<item name="colorOnSecondary">@color/yellow_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/yellow_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/yellow_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/yellow_tertiary</item>
+		<item name="colorOnTertiary">@color/yellow_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/yellow_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/yellow_onTertiaryContainer</item>
+		<item name="colorError">@color/yellow_error</item>
+		<item name="colorOnError">@color/yellow_onError</item>
+		<item name="colorErrorContainer">@color/yellow_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/yellow_onErrorContainer</item>
+		<item name="android:colorBackground">@color/yellow_background</item>
+		<item name="colorOnBackground">@color/yellow_onBackground</item>
+		<item name="colorSurface">@color/yellow_surface</item>
+		<item name="colorOnSurface">@color/yellow_onSurface</item>
+		<item name="colorSurfaceVariant">@color/yellow_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/yellow_onSurfaceVariant</item>
+		<item name="colorOutline">@color/yellow_outline</item>
+		<item name="colorOutlineVariant">@color/yellow_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/yellow_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/yellow_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/yellow_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/yellow_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/yellow_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/yellow_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/yellow_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/yellow_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/yellow_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/yellow_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/yellow_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/yellow_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/yellow_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/yellow_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/yellow_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/yellow_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/yellow_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/yellow_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/yellow_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/yellow_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/yellow_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/yellow_surfaceContainerHighest</item>
+	</style>
 
-    <style name="Theme.MocoComic.Fullscreen" parent="Theme.MocoComic">
-        <item name="android:actionBarStyle">@style/Widget.Theme.MocoComic.ActionBar.Fullscreen
-        </item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-    </style>
+	<style name="Theme.MocoComic.Red" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/red_primary</item>
+		<item name="colorOnPrimary">@color/red_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/red_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/red_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/red_secondary</item>
+		<item name="colorOnSecondary">@color/red_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/red_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/red_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/red_tertiary</item>
+		<item name="colorOnTertiary">@color/red_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/red_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/red_onTertiaryContainer</item>
+		<item name="colorError">@color/red_error</item>
+		<item name="colorOnError">@color/red_onError</item>
+		<item name="colorErrorContainer">@color/red_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/red_onErrorContainer</item>
+		<item name="android:colorBackground">@color/red_background</item>
+		<item name="colorOnBackground">@color/red_onBackground</item>
+		<item name="colorSurface">@color/red_surface</item>
+		<item name="colorOnSurface">@color/red_onSurface</item>
+		<item name="colorSurfaceVariant">@color/red_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/red_onSurfaceVariant</item>
+		<item name="colorOutline">@color/red_outline</item>
+		<item name="colorOutlineVariant">@color/red_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/red_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/red_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/red_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/red_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/red_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/red_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/red_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/red_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/red_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/red_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/red_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/red_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/red_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/red_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/red_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/red_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/red_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/red_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/red_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/red_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/red_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/red_surfaceContainerHighest</item>
+	</style>
+
+	<style name="Theme.MocoComic.Orange" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/orange_primary</item>
+		<item name="colorOnPrimary">@color/orange_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/orange_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/orange_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/orange_secondary</item>
+		<item name="colorOnSecondary">@color/orange_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/orange_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/orange_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/orange_tertiary</item>
+		<item name="colorOnTertiary">@color/orange_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/orange_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/orange_onTertiaryContainer</item>
+		<item name="colorError">@color/orange_error</item>
+		<item name="colorOnError">@color/orange_onError</item>
+		<item name="colorErrorContainer">@color/orange_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/orange_onErrorContainer</item>
+		<item name="android:colorBackground">@color/orange_background</item>
+		<item name="colorOnBackground">@color/orange_onBackground</item>
+		<item name="colorSurface">@color/orange_surface</item>
+		<item name="colorOnSurface">@color/orange_onSurface</item>
+		<item name="colorSurfaceVariant">@color/orange_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/orange_onSurfaceVariant</item>
+		<item name="colorOutline">@color/orange_outline</item>
+		<item name="colorOutlineVariant">@color/orange_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/orange_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/orange_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/orange_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/orange_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/orange_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/orange_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/orange_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/orange_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/orange_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/orange_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/orange_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/orange_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/orange_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/orange_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/orange_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/orange_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/orange_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/orange_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/orange_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/orange_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/orange_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/orange_surfaceContainerHighest</item>
+	</style>
+
+	<style name="Theme.MocoComic.Gray" parent="Theme.MocoComic">
+		<item name="colorPrimary">@color/gray_primary</item>
+		<item name="colorOnPrimary">@color/gray_onPrimary</item>
+		<item name="colorPrimaryContainer">@color/gray_primaryContainer</item>
+		<item name="colorOnPrimaryContainer">@color/gray_onPrimaryContainer</item>
+		<item name="colorSecondary">@color/gray_secondary</item>
+		<item name="colorOnSecondary">@color/gray_onSecondary</item>
+		<item name="colorSecondaryContainer">@color/gray_secondaryContainer</item>
+		<item name="colorOnSecondaryContainer">@color/gray_onSecondaryContainer</item>
+		<item name="colorTertiary">@color/gray_tertiary</item>
+		<item name="colorOnTertiary">@color/gray_onTertiary</item>
+		<item name="colorTertiaryContainer">@color/gray_tertiaryContainer</item>
+		<item name="colorOnTertiaryContainer">@color/gray_onTertiaryContainer</item>
+		<item name="colorError">@color/gray_error</item>
+		<item name="colorOnError">@color/gray_onError</item>
+		<item name="colorErrorContainer">@color/gray_errorContainer</item>
+		<item name="colorOnErrorContainer">@color/gray_onErrorContainer</item>
+		<item name="android:colorBackground">@color/gray_background</item>
+		<item name="colorOnBackground">@color/gray_onBackground</item>
+		<item name="colorSurface">@color/gray_surface</item>
+		<item name="colorOnSurface">@color/gray_onSurface</item>
+		<item name="colorSurfaceVariant">@color/gray_surfaceVariant</item>
+		<item name="colorOnSurfaceVariant">@color/gray_onSurfaceVariant</item>
+		<item name="colorOutline">@color/gray_outline</item>
+		<item name="colorOutlineVariant">@color/gray_outlineVariant</item>
+		<item name="colorSurfaceInverse">@color/gray_inverseSurface</item>
+		<item name="colorOnSurfaceInverse">@color/gray_inverseOnSurface</item>
+		<item name="colorPrimaryInverse">@color/gray_inversePrimary</item>
+		<item name="colorPrimaryFixed">@color/gray_primaryFixed</item>
+		<item name="colorOnPrimaryFixed">@color/gray_onPrimaryFixed</item>
+		<item name="colorPrimaryFixedDim">@color/gray_primaryFixedDim</item>
+		<item name="colorOnPrimaryFixedVariant">@color/gray_onPrimaryFixedVariant</item>
+		<item name="colorSecondaryFixed">@color/gray_secondaryFixed</item>
+		<item name="colorOnSecondaryFixed">@color/gray_onSecondaryFixed</item>
+		<item name="colorSecondaryFixedDim">@color/gray_secondaryFixedDim</item>
+		<item name="colorOnSecondaryFixedVariant">@color/gray_onSecondaryFixedVariant</item>
+		<item name="colorTertiaryFixed">@color/gray_tertiaryFixed</item>
+		<item name="colorOnTertiaryFixed">@color/gray_onTertiaryFixed</item>
+		<item name="colorTertiaryFixedDim">@color/gray_tertiaryFixedDim</item>
+		<item name="colorOnTertiaryFixedVariant">@color/gray_onTertiaryFixedVariant</item>
+		<item name="colorSurfaceDim">@color/gray_surfaceDim</item>
+		<item name="colorSurfaceBright">@color/gray_surfaceBright</item>
+		<item name="colorSurfaceContainerLowest">@color/gray_surfaceContainerLowest</item>
+		<item name="colorSurfaceContainerLow">@color/gray_surfaceContainerLow</item>
+		<item name="colorSurfaceContainer">@color/gray_surfaceContainer</item>
+		<item name="colorSurfaceContainerHigh">@color/gray_surfaceContainerHigh</item>
+		<item name="colorSurfaceContainerHighest">@color/gray_surfaceContainerHighest</item>
+	</style>
 
 </resources>

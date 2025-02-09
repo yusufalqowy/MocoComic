@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	tools:context=".presentation.component.InfoDialogBottomSheet">
+
+	<com.google.android.material.bottomsheet.BottomSheetDragHandleView
+		android:id="@+id/dragHandle"
+		style="@style/Widget.Material3.BottomSheet.DragHandle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:tint="?colorOutline" />
+
+	<androidx.appcompat.widget.AppCompatImageView
+		android:id="@+id/ivIcon"
+		android:layout_width="150dp"
+		android:layout_height="150dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/dragHandle"
+		android:scaleType="fitXY"
+		app:srcCompat="@drawable/ic_error" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/tvTitle"
+		style="@style/TextAppearance.Material3.TitleLarge"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="@dimen/dp_32"
+		android:layout_marginTop="16dp"
+		android:text="@string/text_something_went_wrong"
+		android:textAlignment="center"
+		app:layout_constraintBottom_toTopOf="@+id/tvDescription"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/ivIcon" />
+
+	<com.google.android.material.textview.MaterialTextView
+		android:id="@+id/tvDescription"
+		style="@style/TextAppearance.Material3.BodyMedium"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="@dimen/dp_32"
+		android:layout_marginTop="4dp"
+		android:text="@string/text_unexpected_error"
+		android:textColor="?colorOnSurfaceVariant"
+		android:textAlignment="center"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnNegative"
+		style="@style/Widget.Material3.Button.TonalButton"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginVertical="@dimen/dp_32"
+		android:layout_marginStart="@dimen/dp_32"
+		android:layout_marginEnd="@dimen/dp_16"
+		android:text="@string/text_no"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/btnPositive"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/tvDescription"
+		app:layout_goneMarginEnd="@dimen/dp_32" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnPositive"
+		style="@style/Widget.Material3.Button"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginVertical="@dimen/dp_32"
+		android:layout_marginStart="@dimen/dp_16"
+		android:layout_marginEnd="@dimen/dp_32"
+		android:text="@string/text_yes"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/btnNegative"
+		app:layout_constraintTop_toBottomOf="@id/tvDescription"
+		app:layout_goneMarginStart="@dimen/dp_32" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

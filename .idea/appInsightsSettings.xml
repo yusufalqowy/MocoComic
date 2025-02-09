@@ -21,10 +21,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="yu.desk.mococomic" />
+                  <option name="mobileSdkAppId" value="1:521062247333:android:1d7eed0bde13a853ded64c" />
+                  <option name="projectId" value="comic-7789d" />
+                  <option name="projectNumber" value="521062247333" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

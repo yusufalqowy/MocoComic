@@ -1,105 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.dashboard.profile.ProfileFragment">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="?colorSurface"
+	tools:context=".presentation.dashboard.ProfileFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:liftOnScroll="false">
+	<com.google.android.material.appbar.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:liftOnScroll="false">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="@string/menu_profile"
-            app:titleCentered="true" />
-    </com.google.android.material.appbar.AppBarLayout>
+		<com.google.android.material.appbar.MaterialToolbar
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:title="@string/menu_profile"
+			app:titleCentered="true" />
+	</com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingVertical="@dimen/dp_16"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+	<androidx.core.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:clipToPadding="false"
+		android:paddingVertical="@dimen/dp_16"
+		app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_16"
-                app:cardCornerRadius="50dp">
+			<com.google.android.material.imageview.ShapeableImageView
+				android:id="@+id/ivProfile"
+				android:layout_width="100dp"
+				android:layout_height="100dp"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="@dimen/dp_16"
+				app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+				tools:src="@tools:sample/avatars" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="Photo Profile"
-                    android:src="@drawable/ic_launcher_background" />
-            </com.google.android.material.card.MaterialCardView>
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/tvName"
+				style="@style/TextAppearance.Material3.TitleLarge"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="@dimen/dp_16"
+				android:textStyle="bold"
+				tools:text="Name" />
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/TextAppearance.Material3.TitleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_16"
-                android:text="@string/app_name"
-                android:textStyle="bold"
-                tools:text="Name" />
+			<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/tvEmail"
+				style="@style/TextAppearance.Material3.LabelMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="@dimen/dp_16"
+				android:textColor="?colorOnSurfaceVariant"
+				tools:text="@string/text_email" />
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/TextAppearance.Material3.LabelMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/app_name"
-                tools:text="Email" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemLogin"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_login"
+				app:leadingIcon="@drawable/ic_profile_outline" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="History"
-                app:leadingIcon="@drawable/ic_history" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemChapterHistory"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_history"
+				app:leadingIcon="@drawable/ic_history" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="Theme Setting"
-                app:leadingIcon="@drawable/ic_theatre_mask" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemSetting"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_settings"
+				app:leadingIcon="@drawable/ic_box_settings" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="Contact Us"
-                app:leadingIcon="@drawable/ic_phone" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_contact_us"
+				app:leadingIcon="@drawable/ic_phone" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="Privacy Policy"
-                app:leadingIcon="@drawable/ic_security_lock" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_privacy_policy"
+				app:leadingIcon="@drawable/ic_security_lock" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="Terms &amp; Conditions"
-                app:leadingIcon="@drawable/ic_terms_and_conditions" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_terms_conditions"
+				app:leadingIcon="@drawable/ic_terms_and_conditions" />
 
-            <yu.desk.mococomic.presentation.component.ListItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:label="Logout"
-                app:leadingIcon="@drawable/ic_sign_out" />
+			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemLogout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:title="@string/text_logout"
+				app:leadingIcon="@drawable/ic_sign_out" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+		</LinearLayout>
+	</androidx.core.widget.NestedScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

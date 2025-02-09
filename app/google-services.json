@@ -1,0 +1,186 @@
+{
+  "project_info": {
+    "project_number": "521062247333",
+    "project_id": "comic-7789d",
+    "storage_bucket": "comic-7789d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521062247333:android:97bc09f74157ad2aded64c",
+        "android_client_info": {
+          "package_name": "yu.desk.comic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521062247333-picknhet4156ghopk67joecr87uh3he4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yu.desk.comic",
+            "certificate_hash": "047212fa680513b39866e4c4365b801b05c2bfd7"
+          }
+        },
+        {
+          "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD58CkOL7FYCg3EjKYSdkLwgc3sjK59ULY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521062247333-bt73v9jlhkfa1uifrrq5gco97imer89b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "id.yudesk.comicapp.comicapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521062247333:android:9e77761fbeee3f8aded64c",
+        "android_client_info": {
+          "package_name": "yu.desk.comic.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521062247333-2cnvkon17hnnsah6rgqsqsj7ijr5nb5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yu.desk.comic.dev",
+            "certificate_hash": "7399216df947fed60ddec62b00d72df4954dfdc1"
+          }
+        },
+        {
+          "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD58CkOL7FYCg3EjKYSdkLwgc3sjK59ULY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521062247333-bt73v9jlhkfa1uifrrq5gco97imer89b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "id.yudesk.comicapp.comicapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521062247333:android:98452c3ded43b5deded64c",
+        "android_client_info": {
+          "package_name": "yu.desk.comicapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521062247333-p6icrjijas2muh7ra8i8s54vr05biv05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yu.desk.comicapp",
+            "certificate_hash": "7399216df947fed60ddec62b00d72df4954dfdc1"
+          }
+        },
+        {
+          "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD58CkOL7FYCg3EjKYSdkLwgc3sjK59ULY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521062247333-bt73v9jlhkfa1uifrrq5gco97imer89b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "id.yudesk.comicapp.comicapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521062247333:android:1d7eed0bde13a853ded64c",
+        "android_client_info": {
+          "package_name": "yu.desk.mococomic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521062247333-oqidl73un8de81jeqmujuv2cihep65ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yu.desk.mococomic",
+            "certificate_hash": "7399216df947fed60ddec62b00d72df4954dfdc1"
+          }
+        },
+        {
+          "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD58CkOL7FYCg3EjKYSdkLwgc3sjK59ULY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521062247333-nv1c12c2flqkavn7lj85v9ehej0engob.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521062247333-bt73v9jlhkfa1uifrrq5gco97imer89b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "id.yudesk.comicapp.comicapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

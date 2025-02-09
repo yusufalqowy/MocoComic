@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context=".presentation.search.SearchComicFragment">
+
+
+	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+		android:id="@+id/swipeRefresh"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+		<yu.desk.mococomic.presentation.component.StateView
+			android:id="@+id/stateView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:state="EMPTY">
+
+			<include
+				android:id="@+id/rvSearchComic"
+				layout="@layout/grid_list_comic"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_marginTop="72dp" />
+		</yu.desk.mococomic.presentation.component.StateView>
+	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/ilSearch"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/dp_56"
+		android:layout_marginHorizontal="@dimen/dp_16"
+		android:layout_marginTop="@dimen/dp_16"
+		app:boxBackgroundColor="?colorSurfaceContainerHigh"
+		app:boxStrokeWidth="0dp"
+		app:boxStrokeWidthFocused="0dp"
+		app:endIconDrawable="@drawable/ic_search"
+		app:endIconMode="custom"
+		app:endIconTint="?colorOnSurface"
+		app:hintEnabled="false"
+		app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.SearchBar"
+		app:startIconDrawable="@drawable/ic_arrow_left"
+		app:startIconTint="?colorOnSurface">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/etSearch"
+			style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/text_search_comic"
+			android:imeOptions="actionSearch"
+			android:inputType="text|textCapSentences"
+			app:textInputLayoutFocusedRectEnabled="false" />
+	</com.google.android.material.textfield.TextInputLayout>
+
+</FrameLayout>

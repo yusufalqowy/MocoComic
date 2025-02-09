@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center">
+
+	<com.google.android.material.progressindicator.CircularProgressIndicator
+		android:id="@+id/loadingProgress"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:indeterminate="true" />
+
+	<com.google.android.material.button.MaterialButton
+		android:id="@+id/btnLoadMore"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginVertical="@dimen/dp_16"
+		android:layout_marginHorizontal="@dimen/dp_8"
+		android:visibility="invisible"
+		android:text="@string/text_show_more" />
+
+</FrameLayout>

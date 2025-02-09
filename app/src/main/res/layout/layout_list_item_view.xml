@@ -1,62 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp"
-    app:cardUseCompatPadding="false"
-    app:strokeWidth="0dp"
-    app:cardBackgroundColor="?colorSurface"
-    tools:parentTag="com.google.android.material.card.MaterialCardView">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="56dp"
+	app:cardCornerRadius="0dp"
+	app:cardElevation="0dp"
+	app:cardUseCompatPadding="false"
+	app:strokeWidth="0dp"
+	tools:parentTag="com.google.android.material.card.MaterialCardView">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/container"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:minHeight="@dimen/dp_56">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivLeadingIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:scaleType="fitXY"
-            app:tint="?colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_label"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+		<FrameLayout
+			android:id="@+id/containerLeading"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginVertical="@dimen/dp_8"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/tvTitle"
+			app:layout_constraintHorizontal_bias="0.5"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivTrailingIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="@dimen/dp_16"
-            android:scaleType="fitXY"
-            app:tint="?colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_label"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+			<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/ivLeadingIcon"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="@dimen/dp_16"
+				android:scaleType="fitXY"
+				app:tint="?colorOnSurfaceVariant"
+				tools:src="@tools:sample/avatars" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_label"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="@dimen/dp_16"
-            android:singleLine="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivTrailingIcon"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ivLeadingIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem/random" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+			<com.google.android.material.imageview.ShapeableImageView
+				android:id="@+id/ivImageItem"
+				android:layout_width="88dp"
+				android:layout_height="56dp"
+				android:layout_marginEnd="@dimen/dp_16"
+				android:maxWidth="88dp"
+				android:scaleType="centerCrop"
+				android:visibility="gone"
+				app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+				tools:src="@tools:sample/avatars" />
+		</FrameLayout>
+
+		<androidx.appcompat.widget.AppCompatImageView
+			android:id="@+id/ivTrailingIcon"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:layout_marginStart="@dimen/dp_16"
+			android:scaleType="fitXY"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.5"
+			app:layout_constraintStart_toEndOf="@+id/tvTitle"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:src="@tools:sample/avatars" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/tvTitle"
+			style="@style/TextAppearance.Material3.BodyLarge"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/dp_8"
+			android:ellipsize="end"
+			android:gravity="center_vertical"
+			android:singleLine="true"
+			app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
+			app:layout_constraintEnd_toStartOf="@+id/ivTrailingIcon"
+			app:layout_constraintHorizontal_bias="0.5"
+			app:layout_constraintStart_toEndOf="@+id/containerLeading"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintVertical_chainStyle="packed"
+			app:layout_goneMarginBottom="@dimen/dp_8"
+			tools:text="@tools:sample/lorem" />
+
+		<com.google.android.material.textview.MaterialTextView
+			android:id="@+id/tvSubtitle"
+			style="@style/TextAppearance.Material3.BodyMedium"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/dp_8"
+			android:ellipsize="end"
+			android:maxLines="2"
+			android:textColor="?colorOnSurfaceVariant"
+			android:visibility="visible"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+			app:layout_constraintHorizontal_bias="0.5"
+			app:layout_constraintStart_toEndOf="@+id/containerLeading"
+			app:layout_constraintTop_toBottomOf="@id/tvTitle"
+			tools:text="@tools:sample/lorem" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

@@ -1,22 +1,24 @@
 package yu.desk.mococomic.presentation.comic
 
 import android.animation.LayoutTransition
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
-import coil3.asDrawable
-import coil3.load
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
@@ -24,240 +26,405 @@ import yu.desk.mococomic.databinding.FragmentComicDetailBinding
 import yu.desk.mococomic.domain.model.Chapter
 import yu.desk.mococomic.domain.model.ComicDetail
 import yu.desk.mococomic.presentation.adapter.ListChapterAdapter
-import yu.desk.mococomic.utils.apiResponseHandler
-import yu.desk.mococomic.utils.isTextOverflowing
-import yu.desk.mococomic.utils.loadImage
-import yu.desk.mococomic.utils.loadingShimmer
-import yu.desk.mococomic.utils.navigateWithAnimation
-import yu.desk.mococomic.utils.scaleCropTop
-import yu.desk.mococomic.utils.setVisible
+import yu.desk.mococomic.presentation.component.StateView
+import yu.desk.mococomic.utils.*
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class ComicDetailFragment : Fragment() {
-    lateinit var binding: FragmentComicDetailBinding
-    private val viewModel: ComicViewModel by navGraphViewModels(R.id.comicNavigation)
-    private val navArgs by navArgs<ComicDetailFragmentArgs>()
+	private lateinit var binding: FragmentComicDetailBinding
+	private val viewModel: ComicViewModel by hiltNavGraphViewModels(R.id.comicNavigation)
+	private val navArgs by navArgs<ComicDetailFragmentArgs>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = FragmentComicDetailBinding.inflate(inflater, container, false)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = systemBarInsets.top
-            }
-            binding.swipeRefresh.setProgressViewOffset(false, 0, systemBarInsets.top)
-            binding.navView.drawerContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = systemBarInsets.top
-                bottomMargin = systemBarInsets.bottom
-            }
-            insets
-        }
-        return binding.root
-    }
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?,
+	): View {
+		binding = FragmentComicDetailBinding.inflate(inflater, container, false)
+		ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+			val systemBar = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+			val displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+			binding.apply {
+				toolbar.updateLayoutParams<MarginLayoutParams> {
+					topMargin = systemBar.top
+					leftMargin = displayCutout.left
+					rightMargin = displayCutout.right
+				}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setCurrentComic(navArgs.currentComic)
-        viewModel.getComicDetail()
-    }
+				root.updateLayoutParams<MarginLayoutParams> {
+					leftMargin = systemBar.left
+					rightMargin = systemBar.right
+				}
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-        initListener()
-        initObserver()
-    }
+				scrollView.updatePadding(left = displayCutout.left, right = displayCutout.right)
 
-    private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.comicDetailResponse
-                .flowWithLifecycle(lifecycle)
-                .collectLatest {
-                    apiResponseHandler(
-                        uiState = it,
-                        onLoading = {
-                            onLoading()
-                        },
-                        onSuccess = { data ->
-                            onLoading(false)
-                            onSuccess(data)
-                        },
-                        onError = {
-                            onError()
-                        }
-                    )
-                }
-        }
-    }
+				ivCover.updateLayoutParams<MarginLayoutParams> {
+					leftMargin = displayCutout.left + 16.dp
+				}
 
-    private fun initView() {
-        binding.apply {
-            errorView.setVisible(false)
-            swipeRefresh.setVisible(true)
-            viewModel.comic?.let {
-                ivCoverBackground.load(it.cover) {
-                    listener(
-                        onSuccess = { _, result ->
-                            ivCoverBackground.setImageDrawable(result.image.asDrawable(resources))
-                            ivCoverBackground.scaleCropTop()
-                        }
-                    )
-                }
-                ivCover.loadImage(it.cover)
-                tvTitle.text = it.title
-            }
-        }
-    }
+				btnRead.updateLayoutParams<MarginLayoutParams> {
+					rightMargin = displayCutout.right + 16.dp
+				}
 
-    private fun initListener() {
-        binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            // Handle swipe refresh layout not easy to scroll
-            binding.swipeRefresh.isEnabled = scrollY == 0
-        }
+				bottomMenu.updateLayoutParams<MarginLayoutParams> {
+					bottomMargin = systemBar.bottom + 16.dp
+					leftMargin = displayCutout.left + 16.dp
+					rightMargin = displayCutout.right + 16.dp
+				}
 
-        binding.bottomMenu.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            // Handle visible bottom menu when appbar collapse
-            binding.bottomMenu.setVisible((abs(verticalOffset) - appBarLayout.totalScrollRange) == 0)
-            // Handle swipe refresh layout not easy to scroll
-            binding.swipeRefresh.isEnabled = verticalOffset == 0
-        }
+				navView.drawerContainer.updateLayoutParams<MarginLayoutParams> {
+					topMargin = systemBar.top
+					bottomMargin = systemBar.bottom
+					leftMargin = displayCutout.left
+					rightMargin = displayCutout.right
+				}
+			}
 
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getComicDetail()
-        }
+			insets
+		}
+		return binding.root
+	}
 
-        binding.errorView.addOnRetryClickListener {
-            viewModel.getComicDetail()
-            initView()
-        }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		viewModel.setCurrentComic(navArgs.currentComic)
+		viewModel.getComicDetail()
+	}
 
-        binding.errorView.addOnBackClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+	override fun onViewCreated(
+		view: View,
+		savedInstanceState: Bundle?,
+	) {
+		super.onViewCreated(view, savedInstanceState)
+		initObserver()
+		initView()
+		initListener()
+	}
 
-        binding.btnBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+	private fun initObserver() {
+		lifecycleScope.launch {
+			viewModel.comicDetailResponse
+				.flowWithLifecycle(lifecycle)
+				.collectLatest {
+					apiResponseHandler(
+						uiState = it,
+						onLoading = {
+							onLoading()
+						},
+						onSuccess = { data ->
+							onLoading(false)
+							onSuccess(data)
+						},
+						onError = { msg ->
+							onError(msg)
+						},
+					)
+				}
+		}
 
-        binding.cvSynopsis.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        binding.tvSynopsis.isTextOverflowing {
-            binding.btnShowMore.setVisible(it)
-        }
+		lifecycleScope.launch {
+			viewModel.saveFavoriteResponse
+				.flowWithLifecycle(lifecycle)
+				.collectLatest {
+					apiResponseHandler(
+						uiState = it,
+						onLoading = {
+							showLoading()
+						},
+						onError = { msg ->
+							hideLoading()
+							binding.root.showSnackBar(msg.toString())
+						},
+						onSuccess = { data ->
+							hideLoading()
+							binding.btnFavorite.isChecked = data.first == "save"
+							binding.btnBottomFavorite.isChecked = data.first == "save"
+							if (data.first == "save") {
+								binding.root.showSnackBar(getString(R.string.text_comic_saved_favorite_successfully, data.second.title))
+								findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = true))
+							} else {
+								binding.root.showSnackBar(getString(R.string.text_comic_deleted_favorite_successfully, data.second.title))
+								findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = false))
+							}
+						},
+					)
+				}
+		}
 
-        binding.btnShowMore.setOnClickListener {
-            if (binding.btnShowMore.text == getString(yu.desk.mococomic.R.string.show_more)) {
-                binding.tvSynopsis.maxLines = Integer.MAX_VALUE
-                binding.btnShowMore.text = getString(yu.desk.mococomic.R.string.show_less)
-            } else {
-                binding.tvSynopsis.maxLines = 10
-                binding.btnShowMore.text = getString(yu.desk.mococomic.R.string.show_more)
-            }
-        }
+		lifecycleScope.launch {
+			viewModel.chapterList.flowWithLifecycle(lifecycle).collectLatest { list ->
+				binding.apply {
+					navView.rvListChapter.initRecyclerView {
+						return@initRecyclerView ListChapterAdapter().apply {
+							setItem(list)
+							setOnChapterClickListener { item ->
+								binding.drawer.close()
+								navigateToChapterDetail(item)
+							}
+						}
+					}
 
-        binding.btnChapter.setOnClickListener {
-            binding.drawer.open()
-        }
+					rvChapters.initRecyclerView {
+						return@initRecyclerView ListChapterAdapter().apply {
+							setItem(list.take(5))
+							setOnChapterClickListener { item ->
+								navigateToChapterDetail(item)
+							}
+						}
+					}
+				}
+			}
+		}
 
-        binding.btnRead.setOnClickListener {
-            navigateToChapterDetail(viewModel.getChapterList().last())
-        }
+		lifecycleScope.launch {
+			viewModel.blockedComicResponse.flowWithLifecycle(lifecycle).collectLatest {
+				apiResponseHandler(
+					uiState = it,
+					onLoading = {
+						showLoading()
+					},
+					onSuccess = { data ->
+						hideLoading()
+						binding.root.showSnackBar(getString(R.string.text_comic_blocked_successfully, data.title))
+						findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.BLOCKED_COMIC, data)
+						findNavController().popBackStack()
+					},
+					onError = { msg ->
+						hideLoading()
+						binding.root.showSnackBar(getString(R.string.text_comic_blocked_failed, msg))
+					},
+				)
+			}
+		}
+	}
 
-        binding.btnFavorite.setOnClickListener {
-            binding.btnFavorite.isChecked = true
-        }
-    }
+	private fun initView() {
+		binding.apply {
+			viewModel.comic.let {
+				ivCoverBackground.loadImage(it.cover, enableLoading = false) {
+					ivCoverBackground.scaleCropTop()
+				}
+				ivCover.loadImage(it.cover)
+				tvTitle.text = it.title
+				collapsingToolbar.title = it.title
+				stateView.setToolbar(title = it.title)
+			}
+		}
+	}
 
-    private fun onError() {
-        binding.errorView.setVisible(true)
-        binding.swipeRefresh.setVisible(false)
-        binding.swipeRefresh.isRefreshing = false
-    }
+	private fun initListener() {
+		binding.apply {
+			scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+				// Handle swipe refresh layout not easy to scroll
+				swipeRefresh.isEnabled = scrollY == 0
+			}
 
-    private fun onLoading(isLoading: Boolean = true) {
-        binding.btnFavorite.isEnabled = !isLoading
-        binding.btnChapter.isEnabled = !isLoading
-        binding.btnRead.isEnabled = !isLoading
-        binding.btnBottomRead.isEnabled = !isLoading
-        binding.btnBottomChapter.isEnabled = !isLoading
-        binding.btnBottomFavorite.isEnabled = !isLoading
-        binding.btnBottomComment.isEnabled = !isLoading
-        binding.btnShowMore.setVisible(!isLoading)
-        binding.tvArtist.loadingShimmer(isLoading)
-        binding.ratingBar.loadingShimmer(isLoading)
-        binding.tvRating.loadingShimmer(isLoading)
-        binding.tvSynopsis.loadingShimmer(isLoading)
-        binding.tvAlternative.loadingShimmer(isLoading)
-        binding.tvGenre.loadingShimmer(isLoading)
-        binding.tvAuthor.loadingShimmer(isLoading)
-        binding.tvPublishDate.loadingShimmer(isLoading)
-        binding.tvPublisher.loadingShimmer(isLoading)
-        binding.tvStatus.loadingShimmer(isLoading)
-        binding.tvType.loadingShimmer(isLoading)
-        binding.rvChapters.loadingShimmer(isLoading)
-    }
+			bottomMenu.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+			appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+				// Handle visible bottom menu when appbar collapse
+				bottomMenu.setVisible((abs(verticalOffset) - appBarLayout.totalScrollRange) == 0)
+				// Handle swipe refresh layout not easy to scroll
+				swipeRefresh.isEnabled = verticalOffset == 0
+			}
 
-    @SuppressLint("SetTextI18n")
-    private fun onSuccess(comicDetail: ComicDetail) {
-        binding.ivCoverBackground.load(comicDetail.cover) {
-            listener(
-                onSuccess = { _, result ->
-                    binding.ivCoverBackground.setImageDrawable(result.image.asDrawable(resources))
-                    binding.ivCoverBackground.scaleCropTop()
-                }
-            )
-        }
-        binding.swipeRefresh.isRefreshing = false
-        binding.ivCover.loadImage(comicDetail.cover)
-        binding.tvTitle.text = comicDetail.title.ifEmpty { "-" }
-        binding.errorView.toolbarTitle = comicDetail.title.ifEmpty { "-" }
-        binding.collapsingToolbar.title = comicDetail.title.ifEmpty { "-" }
-        binding.tvArtist.text = "By ${comicDetail.author}"
-        binding.ratingBar.rating = comicDetail.score.toFloatOrNull()?.div(2) ?: 0f
-        binding.tvRating.text = (comicDetail.score.toFloatOrNull()?.div(2) ?: "").toString().ifEmpty { "-" }
-        binding.tvSynopsis.text = comicDetail.synopsis.ifEmpty { "-" }
-        binding.tvAlternative.text = comicDetail.subtitle.ifEmpty { "-" }
-        binding.tvGenre.text = comicDetail.genres.joinToString(", ").ifEmpty { "-" }
-        binding.tvAuthor.text = comicDetail.author.ifEmpty { "-" }
-        binding.tvPublishDate.text = comicDetail.published.ifEmpty { "-" }
-        binding.tvPublisher.text = comicDetail.serialization.ifEmpty { "-" }
-        binding.tvStatus.text = comicDetail.status.ifEmpty { "-" }
-        binding.tvType.text = "Manhwa"
+			btnMore.setOnClickListener { it ->
+				val popupMenu = PopupMenu(requireContext(), it)
+				popupMenu.menu.add(getString(R.string.text_share))
+				popupMenu.menu.add(getString(R.string.text_block_comic))
+				popupMenu.setOnMenuItemClickListener { menu ->
+					when (menu.title) {
+						getString(R.string.text_share) -> {}
 
-        binding.navView.apply {
-            btnClose.setOnClickListener {
-                binding.drawer.close()
-            }
-            rvListChapter.apply {
-                setHasFixedSize(true)
-                adapter =
-                    ListChapterAdapter().apply {
-                        setItem(viewModel.getChapterList())
-                        setOnChapterClickListener { item ->
-                            navigateToChapterDetail(item)
-                        }
-                    }
-            }
-        }
+						getString(R.string.text_block_comic) -> {
+							viewModel.blockedComic(viewModel.comic)
+						}
+					}
+					return@setOnMenuItemClickListener true
+				}
+				popupMenu.show()
+			}
 
-        binding.rvChapters.apply {
-            setHasFixedSize(true)
-            adapter =
-                ListChapterAdapter().apply {
-                    setItem(viewModel.getChapterList().take(5))
-                }
-        }
-    }
+			tvTitle.setOnLongClickListener {
+				requireContext().copyTextToClipboard(tvTitle.text.toString())
+				return@setOnLongClickListener true
+			}
 
-    private fun navigateToChapterDetail(chapter: Chapter) {
-        val direction = ComicDetailFragmentDirections.actionComicDetailToComicReader(chapter)
-        findNavController().navigateWithAnimation(direction)
-    }
+			swipeRefresh.setOnRefreshListener {
+				viewModel.getComicDetail()
+			}
+
+			btnBack.setOnClickListener {
+				requireActivity().onBackPressedDispatcher.onBackPressed()
+			}
+
+			cvSynopsis.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+
+			btnShowMore.setOnClickListener {
+				if (btnShowMore.text == getString(R.string.text_show_more)) {
+					tvSynopsis.maxLines = Integer.MAX_VALUE
+					btnShowMore.text = getString(R.string.text_show_less)
+				} else {
+					tvSynopsis.maxLines = 10
+					btnShowMore.text = getString(R.string.text_show_more)
+				}
+			}
+
+			btnChapter.setOnClickListener {
+				drawer.open()
+			}
+
+			btnBottomChapter.setOnClickListener {
+				btnChapter.performClick()
+			}
+
+			btnRead.setOnClickListener {
+				val chapter =
+					viewModel.chapterList.value.firstOrNull { it.isAlreadyRead } ?: viewModel.chapterList.value.last()
+				navigateToChapterDetail(chapter)
+			}
+
+			btnBottomRead.setOnClickListener {
+				btnRead.performClick()
+			}
+
+			btnFavorite.setOnClickListener {
+				btnFavorite.isChecked = viewModel.comic.isFavorite
+				viewModel.setFavorite(viewModel.comic)
+			}
+
+			btnBottomFavorite.setOnClickListener {
+				btnBottomFavorite.isChecked = viewModel.comic.isFavorite
+				viewModel.setFavorite(viewModel.comic)
+			}
+
+			btnBottomComment.setOnClickListener {
+				showLoading()
+				lifecycleScope.launch {
+					val url = viewModel.comic.getCommentUrl()
+					requireContext().openTab(url)
+					hideLoading()
+				}
+			}
+
+			navView.btnClose.setOnClickListener {
+				drawer.close()
+			}
+
+			stateView.addOnActionClickListener {
+				viewModel.getComicDetail()
+			}
+
+			stateView.addOnBackClickListener {
+				requireActivity().onBackPressedDispatcher.onBackPressed()
+			}
+		}
+	}
+
+	private fun onError(message: String?) {
+		binding.apply {
+			setSwipeRefreshOffset(StateView.ERROR)
+			stateView.setState(StateView.ERROR)
+			stateView.setError(description = message)
+			swipeRefresh.isRefreshing = false
+		}
+	}
+
+	private fun onLoading(isLoading: Boolean = true) {
+		binding.apply {
+			setSwipeRefreshOffset(StateView.CONTENT)
+			stateView.setState(StateView.CONTENT)
+			btnFavorite.isEnabled = !isLoading
+			btnChapter.isEnabled = !isLoading
+			btnRead.isEnabled = !isLoading
+			btnBottomRead.isEnabled = !isLoading
+			btnBottomChapter.isEnabled = !isLoading
+			btnBottomFavorite.isEnabled = !isLoading
+			btnBottomComment.isEnabled = !isLoading
+			btnShowMore.setVisible(!isLoading)
+			tvArtist.loadingShimmer(isLoading)
+			ratingBar.loadingShimmer(isLoading)
+			tvRating.loadingShimmer(isLoading)
+			tvSynopsis.loadingShimmer(isLoading)
+			tvAlternative.loadingShimmer(isLoading)
+			tvGenre.loadingShimmer(isLoading)
+			tvAuthor.loadingShimmer(isLoading)
+			tvPublishDate.loadingShimmer(isLoading)
+			tvPublisher.loadingShimmer(isLoading)
+			tvStatus.loadingShimmer(isLoading)
+			tvType.loadingShimmer(isLoading)
+			rvChapters.loadingShimmer(isLoading)
+		}
+	}
+
+	private fun onSuccess(data: ComicDetail) {
+		binding.apply {
+			ivCoverBackground.loadImage(data.cover, false) {
+				ivCoverBackground.scaleCropTop()
+				ivCover.loadImage(data.cover)
+			}
+			swipeRefresh.isRefreshing = false
+			tvTitle.text = data.title.ifEmpty { "-" }
+			collapsingToolbar.title = data.title.ifEmpty { "-" }
+			tvArtist.text = getString(R.string.text_comic_by, data.author)
+			ratingBar.rating = data.score.toFloatOrNull()?.div(2) ?: 0f
+			tvRating.text = (data.score.toFloatOrNull()?.div(2) ?: "").toString().ifEmpty { "-" }
+			btnFavorite.isChecked = data.comic.isFavorite
+			btnBottomFavorite.isChecked = data.comic.isFavorite
+			val isAlreadyRead = data.chapters.find { it.isAlreadyRead }?.isAlreadyRead ?: false
+			val text = if (isAlreadyRead) R.string.text_continue else R.string.text_read
+			btnRead.setText(text)
+			btnBottomRead.setText(text)
+
+			tvSynopsis.text = data.synopsis.ifEmpty { "-" }
+			tvSynopsis.isTextOverflowing {
+				btnShowMore.setVisible(it)
+			}
+			tvAlternative.text = data.subtitle.ifEmpty { "-" }
+			tvGenre.text = data.genres.joinToString(", ").ifEmpty { "-" }
+			tvAuthor.text = data.author.ifEmpty { "-" }
+			tvPublishDate.text = data.published.ifEmpty { "-" }
+			tvPublisher.text = data.serialization.ifEmpty { "-" }
+			tvStatus.text = data.status.ifEmpty { "-" }
+			tvType.text = data.comic.type.title
+
+			navView.rvListChapter.initRecyclerView {
+				return@initRecyclerView ListChapterAdapter().apply {
+					setItem(viewModel.chapterList.value)
+					setOnChapterClickListener { item ->
+						binding.drawer.close()
+						navigateToChapterDetail(item)
+					}
+				}
+			}
+
+			rvChapters.initRecyclerView {
+				return@initRecyclerView ListChapterAdapter().apply {
+					setItem(viewModel.chapterList.value.take(5))
+					setOnChapterClickListener { item ->
+						navigateToChapterDetail(item)
+					}
+				}
+			}
+		}
+	}
+
+	private fun setSwipeRefreshOffset(state: StateView.State) {
+		binding.apply {
+			if (state == StateView.ERROR) {
+				val startOffset = binding.toolbar.layoutParams.height
+				swipeRefresh.setProgressViewOffset(true, startOffset, startOffset + 64.dp)
+			} else {
+				val startOffset = getResourceStatusBarHeight()
+				swipeRefresh.setProgressViewOffset(true, startOffset, startOffset + 64.dp)
+			}
+		}
+	}
+
+	private fun navigateToChapterDetail(chapter: Chapter) {
+		// Reset chapter
+		viewModel.setCurrentChapter(Chapter())
+		val direction = ComicDetailFragmentDirections.actionComicDetailToComicReader(chapter)
+		findNavController().navigateWithAnimation(direction)
+	}
 }

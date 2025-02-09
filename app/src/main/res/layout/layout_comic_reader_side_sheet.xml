@@ -23,7 +23,7 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:src="@color/gray_400"
+            android:src="?colorOutlineVariant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />

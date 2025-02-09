@@ -29,12 +29,9 @@
         <argument
             android:name="currentChapter"
             app:argType="yu.desk.mococomic.domain.model.Chapter" />
-
-        <action
-            android:id="@+id/action_comicReader_self"
-            app:destination="@id/comicReader"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/comicDetail"
-            app:popUpToInclusive="true"/>
     </fragment>
+    <dialog
+        android:id="@+id/dialogLoading"
+        android:name="yu.desk.mococomic.presentation.component.LoadingDialog"
+        tools:layout="@layout/fragment_loading_dialog" />
 </navigation>
