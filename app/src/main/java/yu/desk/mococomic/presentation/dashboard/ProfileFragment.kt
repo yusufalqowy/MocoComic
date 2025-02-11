@@ -104,7 +104,15 @@ class ProfileFragment : Fragment() {
 			}
 
 			itemSetting.setOnClickListener {
-				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.settingsFragment)
+				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_settingsFragment)
+			}
+
+			itemPrivacyPolicy.setOnClickListener {
+				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_privacyPolicyFragment)
+			}
+
+			itemTermCondition.setOnClickListener {
+				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_termsAndConditionsFragment)
 			}
 		}
 	}

@@ -82,18 +82,21 @@
 				app:leadingIcon="@drawable/ic_box_settings" />
 
 			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemContactUs"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:title="@string/text_contact_us"
 				app:leadingIcon="@drawable/ic_phone" />
 
 			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemPrivacyPolicy"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:title="@string/text_privacy_policy"
 				app:leadingIcon="@drawable/ic_security_lock" />
 
 			<yu.desk.mococomic.presentation.component.ListItemView
+				android:id="@+id/itemTermCondition"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:title="@string/text_terms_conditions"

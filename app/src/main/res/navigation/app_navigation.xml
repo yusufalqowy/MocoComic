@@ -34,6 +34,17 @@
 			android:id="@+id/action_dashboardMain_to_searchComicFragment"
 			app:destination="@id/searchComicFragment"
 			app:popUpTo="@id/dashboardMain" />
+		<action
+			android:id="@+id/action_dashboardMain_to_privacyPolicyFragment"
+			app:destination="@id/privacyPolicyFragment"
+			app:popUpTo="@id/dashboardMain" />
+		<action
+			android:id="@+id/action_dashboardMain_to_settingsFragment"
+			app:destination="@id/settingsFragment"
+			app:popUpTo="@id/dashboardMain" />
+		<action
+			android:id="@+id/action_dashboardMain_to_termsAndConditionsFragment"
+			app:destination="@id/termsAndConditionsFragment" />
 	</fragment>
 
 	<dialog
@@ -77,5 +88,14 @@
 		android:name="yu.desk.mococomic.presentation.search.SearchComicFragment"
 		android:label="fragment_search_comic"
 		tools:layout="@layout/fragment_search_comic" />
+	<fragment
+		android:id="@+id/privacyPolicyFragment"
+		android:name="yu.desk.mococomic.presentation.privacypolicy.PrivacyPolicyFragment"
+		android:label="fragment_privacy_policy"
+		tools:layout="@layout/fragment_web_view" />
+	<fragment
+		android:id="@+id/termsAndConditionsFragment"
+		android:name="yu.desk.mococomic.presentation.termscondition.TermsAndConditionsFragment"
+		android:label="TermsAndConditionsFragment" />
 
 </navigation>

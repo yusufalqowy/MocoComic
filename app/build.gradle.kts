@@ -127,6 +127,8 @@ dependencies {
 	implementation(libs.androidx.constraintlayout)
 	implementation(libs.androidx.swiperefreshlayout)
 
+	implementation(libs.androidx.webkit)
+
 	// Hilt
 	implementation(libs.hilt.android)
 	implementation(libs.androidx.hilt.navigation.fragment)
