@@ -10,12 +10,8 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentLoginBinding
-import yu.desk.mococomic.presentation.component.InfoDialogBottomSheetArgs
 import yu.desk.mococomic.presentation.component.InfoDialogData
-import yu.desk.mococomic.utils.AuthHelper
-import yu.desk.mococomic.utils.hideLoading
-import yu.desk.mococomic.utils.navigateWithAnimation
-import yu.desk.mococomic.utils.showLoading
+import yu.desk.mococomic.utils.*
 
 class LoginFragment : Fragment() {
 	private lateinit var binding: FragmentLoginBinding
@@ -84,13 +80,12 @@ class LoginFragment : Fragment() {
 
 	private fun showErrorDialog(message: String) {
 		val data =
-			InfoDialogBottomSheetArgs.Builder(
-				InfoDialogData(
-					description = message,
-					positiveButton = "Close" to {},
-				),
+			InfoDialogData(
+				image = R.drawable.img_attention,
+				description = message,
+				positiveButton = "Close" to {},
 			)
-		findNavController().navigate(R.id.dialogInfoBottomSheet, data.build().toBundle())
+		showInfoBottomSheet(data)
 	}
 
 	private fun navigateToDashboard() {

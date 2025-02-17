@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/comicNavigation"
-    app:startDestination="@id/comicDetail">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/comicNavigation"
+	app:startDestination="@id/comicDetail">
 
-    <fragment
-        android:id="@+id/comicDetail"
-        android:name="yu.desk.mococomic.presentation.comic.ComicDetailFragment"
-        android:label="fragment_comic_detail"
-        tools:layout="@layout/fragment_comic_detail">
-        <argument
-            android:name="currentComic"
-            app:argType="yu.desk.mococomic.domain.model.Comic" />
+	<fragment
+		android:id="@+id/comicDetail"
+		android:name="yu.desk.mococomic.presentation.comic.ComicDetailFragment"
+		android:label="fragment_comic_detail"
+		tools:layout="@layout/fragment_comic_detail">
+		<argument
+			android:name="currentComic"
+			app:argType="yu.desk.mococomic.domain.model.Comic" />
 
-        <action
-            android:id="@+id/action_comicDetail_to_comicReader"
-            app:destination="@id/comicReader"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/comicDetail" />
-    </fragment>
-    <fragment
-        android:id="@+id/comicReader"
-        android:name="yu.desk.mococomic.presentation.comic.ComicReaderFragment"
-        android:label="fragment_comic_reader"
-        tools:layout="@layout/fragment_comic_reader">
+		<action
+			android:id="@+id/action_comicDetail_to_comicReader"
+			app:destination="@id/comicReader"
+			app:launchSingleTop="true"
+			app:popUpTo="@id/comicDetail" />
+	</fragment>
+	<fragment
+		android:id="@+id/comicReader"
+		android:name="yu.desk.mococomic.presentation.comic.ComicReaderFragment"
+		android:label="fragment_comic_reader"
+		tools:layout="@layout/fragment_comic_reader">
 
-        <argument
-            android:name="currentChapter"
-            app:argType="yu.desk.mococomic.domain.model.Chapter" />
-    </fragment>
-    <dialog
-        android:id="@+id/dialogLoading"
-        android:name="yu.desk.mococomic.presentation.component.LoadingDialog"
-        tools:layout="@layout/fragment_loading_dialog" />
+		<argument
+			android:name="currentChapter"
+			app:argType="yu.desk.mococomic.domain.model.Chapter" />
+	</fragment>
 </navigation>

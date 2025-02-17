@@ -13,10 +13,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentProfileBinding
-import yu.desk.mococomic.presentation.component.InfoDialogBottomSheetArgs
 import yu.desk.mococomic.presentation.component.InfoDialogData
 import yu.desk.mococomic.utils.*
-import yu.desk.mococomic.utils.AuthHelper
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -78,8 +76,8 @@ class ProfileFragment : Fragment() {
 	private fun initListener() {
 		binding.apply {
 			itemLogout.setOnClickListener {
-				showDialogInfo(
-					dialogData =
+				showInfoBottomSheet(
+					infoData =
 						InfoDialogData(
 							title = getString(R.string.text_sure_want_to_logout),
 							negativeButton = getString(R.string.text_no) to {},
@@ -143,10 +141,5 @@ class ProfileFragment : Fragment() {
 
 	private fun navigateToChapterHistory() {
 		findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_chapterHistoryFragment)
-	}
-
-	private fun showDialogInfo(dialogData: InfoDialogData) {
-		val data = InfoDialogBottomSheetArgs.Builder(dialogData)
-		findNavController(R.id.navHostMain).navigateWithAnimation(R.id.dialogInfoBottomSheet, data.build().toBundle())
 	}
 }

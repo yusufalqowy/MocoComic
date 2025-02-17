@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
+import coil3.imageLoader
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import yu.desk.mococomic.R
+import yu.desk.mococomic.presentation.component.AppThemeBottomSheet
+import yu.desk.mococomic.presentation.component.ColorSchemeBottomSheet
 import java.security.MessageDigest
 import java.util.*
 
@@ -75,6 +78,15 @@ object AuthHelper {
 			credentialManager.clearCredentialState(request)
 			context.setIsLogin(false)
 			context.setIsGuest(false)
+			context.setEnableBiometric(false)
+			context.setEnableBlockedComic(true)
+			context.setColorScheme(ColorSchemeBottomSheet.ColorScheme.DYNAMIC)
+			context.setAppTheme(AppThemeBottomSheet.AppTheme.SYSTEM)
+			context.imageLoader.apply {
+				memoryCache?.clear()
+				diskCache?.clear()
+				context.cacheDir.deleteRecursively()
+			}
 			onSuccess?.invoke()
 		} catch (e: Exception) {
 			e.printStackTrace()

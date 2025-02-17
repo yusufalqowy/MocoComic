@@ -47,22 +47,6 @@
 			app:destination="@id/termsAndConditionsFragment" />
 	</fragment>
 
-	<dialog
-		android:id="@+id/dialogInfoBottomSheet"
-		android:name="yu.desk.mococomic.presentation.component.InfoDialogBottomSheet"
-		android:label="Info"
-		tools:layout="@layout/fragment_info_bottom_sheet">
-		<argument
-			android:name="data"
-			app:argType="yu.desk.mococomic.presentation.component.InfoDialogData" />
-	</dialog>
-
-	<dialog
-		android:id="@+id/dialogLoading"
-		android:name="yu.desk.mococomic.presentation.component.LoadingDialog"
-		android:label="Loading"
-		tools:layout="@layout/fragment_loading_dialog" />
-
 	<include app:graph="@navigation/comic_navigation" />
 
 	<fragment

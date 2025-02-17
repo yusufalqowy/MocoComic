@@ -59,6 +59,10 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 
+		if (BuildConfig.DEBUG) {
+			requestNotificationPermission(this, onGranted = {}, onDenied = {})
+		}
+
 		splashScreen.setKeepOnScreenCondition {
 			isWaiting
 		}

@@ -1,6 +1,6 @@
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
-import java.util.Properties
+import java.util.*
 
 plugins {
 	alias(libs.plugins.android.application)
@@ -91,6 +91,10 @@ android {
 			applicationIdSuffix = ".stag"
 			resValue("string", "app_name", "Moco Comic Stag")
 		}
+	}
+
+	buildFeatures {
+		buildConfig = true
 	}
 
 	externalNativeBuild {

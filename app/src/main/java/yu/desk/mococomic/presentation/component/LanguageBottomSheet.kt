@@ -29,7 +29,7 @@ class LanguageBottomSheet(context: Context) : BottomSheetDialog(context) {
 		binding.apply {
 			toolbar.title = context.getString(R.string.text_language)
 			val currentLocale = Locale.getDefault().language
-			val localeList = listOf(Locale.forLanguageTag("en"), Locale.forLanguageTag("in"))
+			val localeList = listOf(Locale.forLanguageTag("en-US"), Locale.forLanguageTag("in-ID"))
 			localeList.forEach {
 				val chip =
 					Chip(context).apply {

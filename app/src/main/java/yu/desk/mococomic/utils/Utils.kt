@@ -43,6 +43,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.*
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -62,10 +63,7 @@ import kotlinx.coroutines.withContext
 import yu.desk.mococomic.R
 import yu.desk.mococomic.domain.model.Chapter
 import yu.desk.mococomic.domain.model.Comic
-import yu.desk.mococomic.presentation.component.InfoDialogBottomSheetArgs
-import yu.desk.mococomic.presentation.component.InfoDialogData
-import yu.desk.mococomic.presentation.component.ShimmerContainer
-import yu.desk.mococomic.presentation.component.StateView
+import yu.desk.mococomic.presentation.component.*
 import java.net.URL
 import java.net.URLEncoder
 import java.util.*
@@ -250,7 +248,13 @@ fun RecyclerView.initRecyclerView(
 
 fun Fragment.findNavController(
 	@IdRes navId: Int,
-) = requireActivity().findNavController(navId)
+): NavController {
+	return try {
+		requireActivity().findNavController(navId)
+	} catch (e: Exception) {
+		findNavController()
+	}
+}
 
 fun NavController.navigateWithAnimation(
 	@IdRes id: Int,
@@ -419,16 +423,19 @@ suspend fun Chapter.getCommentUrl(): String {
 }
 
 fun Fragment.showLoading() {
-	findNavController(R.id.navHostMain).navigateWithAnimation(R.id.dialogLoading)
+	LoadingDialog.show(childFragmentManager)
 }
 
 fun Fragment.hideLoading() {
-	findNavController(R.id.navHostMain).popBackStack()
+	LoadingDialog.hide(childFragmentManager)
+}
+
+fun Fragment.showInfoBottomSheet(infoData: InfoDialogData) {
+	InfoDialogBottomSheet.show(infoData, childFragmentManager)
 }
 
 fun Fragment.showInfoDialog(infoData: InfoDialogData) {
-	val data = InfoDialogBottomSheetArgs.Builder(infoData)
-	findNavController(R.id.navHostMain).navigateWithAnimation(R.id.dialogInfoBottomSheet, data.build().toBundle())
+	InfoDialog.show(infoData, childFragmentManager)
 }
 
 @ColorRes
