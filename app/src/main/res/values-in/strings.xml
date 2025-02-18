@@ -67,4 +67,6 @@
 	<string name="text_light_mode">Mode Terang</string>
 	<string name="text_dark_mode">Mode Gelap</string>
 	<string name="text_privacy_policy">Kebijakan Privasi</string>
+	<string name="text_we_appreciate_your_feedback">Kami menghargai umpan balik Anda. Kirimkan saran atau pertanyaan Anda melalui email.</string>
+	<string name="text_find_us_on_discord">Temukan kami di Discord</string>
 </resources>

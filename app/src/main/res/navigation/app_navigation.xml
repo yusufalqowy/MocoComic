@@ -44,7 +44,12 @@
 			app:popUpTo="@id/dashboardMain" />
 		<action
 			android:id="@+id/action_dashboardMain_to_termsAndConditionsFragment"
-			app:destination="@id/termsAndConditionsFragment" />
+			app:destination="@id/termsAndConditionsFragment"
+			app:popUpTo="@id/dashboardMain" />
+		<action
+			android:id="@+id/action_dashboardMain_to_contactFragment"
+			app:destination="@id/contactFragment"
+			app:popUpTo="@id/dashboardMain" />
 	</fragment>
 
 	<include app:graph="@navigation/comic_navigation" />
@@ -81,5 +86,10 @@
 		android:id="@+id/termsAndConditionsFragment"
 		android:name="yu.desk.mococomic.presentation.termscondition.TermsAndConditionsFragment"
 		android:label="TermsAndConditionsFragment" />
+	<fragment
+		android:id="@+id/contactFragment"
+		android:name="yu.desk.mococomic.presentation.contact.ContactFragment"
+		android:label="fragment_contact"
+		tools:layout="@layout/fragment_contact" />
 
 </navigation>

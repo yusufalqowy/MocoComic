@@ -112,6 +112,10 @@ class ProfileFragment : Fragment() {
 			itemTermCondition.setOnClickListener {
 				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_termsAndConditionsFragment)
 			}
+
+			itemContactUs.setOnClickListener {
+				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_contactFragment)
+			}
 		}
 	}
 

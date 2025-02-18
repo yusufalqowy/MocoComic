@@ -67,4 +67,6 @@
 	<string name="text_light_mode">Light Mode</string>
 	<string name="text_dark_mode">Dark Mode</string>
 	<string name="text_privacy_policy">Privacy Policy</string>
+	<string name="text_we_appreciate_your_feedback">We appreciate your feedback. Send your suggestions or questions via email.</string>
+	<string name="text_find_us_on_discord">Find us on Discord</string>
 </resources>

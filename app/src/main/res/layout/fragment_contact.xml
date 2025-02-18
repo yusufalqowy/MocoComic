@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	android:orientation="vertical"
+	tools:context=".presentation.contact.ContactFragment">
+
+	<com.google.android.material.appbar.MaterialToolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:navigationIcon="@drawable/ic_arrow_left"
+		app:navigationIconTint="?colorOnSurface"
+		app:title="@string/text_contact_us" />
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemEmail"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:leadingIcon="@drawable/ic_mail"
+		app:subtitle="@string/text_we_appreciate_your_feedback"
+		app:title="Email" />
+
+	<yu.desk.mococomic.presentation.component.ListItemView
+		android:id="@+id/itemDiscord"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:leadingIcon="@drawable/ic_discord"
+		app:subtitle="@string/text_find_us_on_discord"
+		app:title="Discord" />
+
+</LinearLayout>
