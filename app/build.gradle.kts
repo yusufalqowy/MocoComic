@@ -77,19 +77,10 @@ android {
 
 	flavorDimensions += "env"
 	productFlavors {
-		create("dev") {
+		create("demo") {
 			dimension = "env"
-			applicationIdSuffix = ".dev"
-			resValue("string", "app_name", "Moco Comic Dev")
-		}
-		create("prod") {
-			dimension = "env"
-			resValue("string", "app_name", "Moco Comic")
-		}
-		create("stag") {
-			dimension = "env"
-			applicationIdSuffix = ".stag"
-			resValue("string", "app_name", "Moco Comic Stag")
+			applicationIdSuffix = ".demo"
+			resValue("string", "app_name", "Moco Comic Demo")
 		}
 	}
 
@@ -189,6 +180,9 @@ dependencies {
 
 	// Biometric
 	implementation(libs.androidx.biometric)
+
+	// Kotlin Datetime
+	implementation(libs.kotlinx.datetime)
 
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)

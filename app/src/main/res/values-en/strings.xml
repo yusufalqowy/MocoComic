@@ -67,4 +67,9 @@
 	<string name="text_light_mode">Light Mode</string>
 	<string name="text_dark_mode">Dark Mode</string>
 	<string name="text_privacy_policy">Privacy Policy</string>
+	<string name="text_trial_period_expired">Trial Period Expired</string>
+	<string name="text_your_trial_period_has_ended">Your trial period has ended.</string>
+	<string name="text_demo_app">Demo App</string>
+	<string name="text_this_is_demo_app_this_app_will_expire_in">This is demo app. You have %1$s days to using this app.</string>
+	<string name="text_exit">Exit</string>
 </resources>

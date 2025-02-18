@@ -2,6 +2,7 @@ package yu.desk.mococomic.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -9,6 +10,7 @@ import androidx.security.crypto.MasterKey
 import yu.desk.mococomic.presentation.component.AppThemeBottomSheet
 import yu.desk.mococomic.presentation.component.ColorSchemeBottomSheet
 import yu.desk.mococomic.utils.SharedPrefKeys.APP_PREFERENCES_NAME
+import java.util.*
 
 object SharedPrefKeys {
 	const val APP_PREFERENCES_NAME = "moco_comic_preferences"
@@ -18,6 +20,7 @@ object SharedPrefKeys {
 	const val IS_ENABLE_BIOMETRIC = "is_enable_biometric"
 	const val APP_THEME = "app_theme"
 	const val COLOR_SCHEME = "color_scheme"
+	const val END_DEMO_DATE = "end_demo_date"
 }
 
 fun Context.getEnableBlockedComic() = appSharedPreferences().getBoolean(SharedPrefKeys.IS_ENABLE_BLOCKED_COMIC, true)
@@ -43,6 +46,27 @@ fun Context.setAppTheme(value: AppThemeBottomSheet.AppTheme) = this.appSharedPre
 fun Context.getColorScheme() = ColorSchemeBottomSheet.ColorScheme.getByName(this.appSharedPreferences().getString(SharedPrefKeys.COLOR_SCHEME, ColorSchemeBottomSheet.ColorScheme.DYNAMIC.name) ?: "")
 
 fun Context.setColorScheme(value: ColorSchemeBottomSheet.ColorScheme) = this.appSharedPreferences().putString(SharedPrefKeys.COLOR_SCHEME, value.name)
+
+fun Context.setEndDemo(endDate: Date) =
+	this.appSharedPreferences().edit {
+		val date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).format(endDate)
+		putString(SharedPrefKeys.END_DEMO_DATE, date)
+	}
+
+fun Context.getEndDemo() =
+	this.appSharedPreferences().run {
+		try {
+			val endDate = getString(SharedPrefKeys.END_DEMO_DATE, "")
+			if (!endDate.isNullOrEmpty()) {
+				SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault()).parse(endDate)
+			} else {
+				null
+			}
+		} catch (e: Exception) {
+			e.printStackTrace()
+			null
+		}
+	}
 
 fun Context.getModeNight() =
 	when (this.appSharedPreferences().getString(SharedPrefKeys.APP_THEME, AppThemeBottomSheet.AppTheme.SYSTEM.name)) {

@@ -18,6 +18,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.databinding.ActivityMainBinding
+import yu.desk.mococomic.presentation.component.InfoDialog
+import yu.desk.mococomic.presentation.component.InfoDialogData
 import yu.desk.mococomic.utils.*
 
 @AndroidEntryPoint
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 	}
+	private val demoManager by lazy { DemoManager(this) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		theme.applyStyle(getColorScheme().style, true)
@@ -71,6 +74,37 @@ class MainActivity : AppCompatActivity() {
 	override fun onResume() {
 		super.onResume()
 		this.theme.applyStyle(getColorScheme().style, true)
+		checkDemoStatus()
+	}
+
+	private fun checkDemoStatus(onResult: ((isDemoOver: Boolean) -> Unit)? = null) {
+		demoManager.checkDemoStatus {
+			when (it) {
+				DemoManager.Companion.StatusDemo.OVER -> {
+					showDemoOverDialog()
+					onResult?.invoke(true)
+				}
+
+				else -> onResult?.invoke(false)
+			}
+		}
+	}
+
+	private fun showDemoOverDialog() {
+		InfoDialog.show(
+			dialogData =
+				InfoDialogData(
+					image = R.drawable.img_attention,
+					title = getString(R.string.text_trial_period_expired),
+					description = getString(R.string.text_your_trial_period_has_ended),
+					positiveButton =
+						getString(R.string.text_exit) to {
+							finishAffinity()
+						},
+					isCancellable = false,
+				),
+			fragmentManager = supportFragmentManager,
+		)
 	}
 
 	private fun initObserver() {

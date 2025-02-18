@@ -67,4 +67,9 @@
 	<string name="text_light_mode">Mode Terang</string>
 	<string name="text_dark_mode">Mode Gelap</string>
 	<string name="text_privacy_policy">Kebijakan Privasi</string>
+	<string name="text_trial_period_expired">Masa Uji Coba Berakhir</string>
+	<string name="text_your_trial_period_has_ended">Masa uji coba Anda telah berakhir.</string>
+	<string name="text_demo_app">Aplikasi Demo</string>
+	<string name="text_this_is_demo_app_this_app_will_expire_in">Ini adalah aplikasi demo. Anda memiliki waktu %1$s hari untuk menggunakan aplikasi ini.</string>
+	<string name="text_exit">Keluar</string>
 </resources>
