@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentProfileBinding
@@ -45,31 +43,29 @@ class ProfileFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			viewModel.clearDbResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						showLoading()
-					},
-					onSuccess = {
-						hideLoading()
-						lifecycleScope.launch {
-							AuthHelper.signOut(requireContext()) {
-								navigateToLogin()
-							}
+		viewModel.clearDbResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					showLoading()
+				},
+				onSuccess = {
+					hideLoading()
+					lifecycleScope.launch {
+						AuthHelper.signOut(requireContext()) {
+							navigateToLogin()
 						}
-					},
-					onError = {
-						hideLoading()
-						lifecycleScope.launch {
-							AuthHelper.signOut(requireContext()) {
-								navigateToLogin()
-							}
+					}
+				},
+				onError = {
+					hideLoading()
+					lifecycleScope.launch {
+						AuthHelper.signOut(requireContext()) {
+							navigateToLogin()
 						}
-					},
-				)
-			}
+					}
+				},
+			)
 		}
 	}
 

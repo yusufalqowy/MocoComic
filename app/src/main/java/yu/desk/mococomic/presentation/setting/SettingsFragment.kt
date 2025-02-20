@@ -14,10 +14,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentSettingsBinding
 import yu.desk.mococomic.presentation.component.AppThemeBottomSheet
@@ -53,32 +49,30 @@ class SettingsFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			biometricHelper.promptResults.flowWithLifecycle(lifecycle).collectLatest {
-				when (it) {
-					BiometricHelper.BiometricResult.AuthenticationNotSet -> {
-						if (Build.VERSION.SDK_INT >= 30) {
-							val enrollIntent =
-								Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-									putExtra(
-										Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-										BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
-									)
-								}
-							enrollLauncher.launch(enrollIntent)
-						}
+		biometricHelper.promptResults.launchAndCollectLatest(viewLifecycleOwner) {
+			when (it) {
+				BiometricHelper.BiometricResult.AuthenticationNotSet -> {
+					if (Build.VERSION.SDK_INT >= 30) {
+						val enrollIntent =
+							Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+								putExtra(
+									Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+									BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
+								)
+							}
+						enrollLauncher.launch(enrollIntent)
 					}
-
-					BiometricHelper.BiometricResult.AuthenticationSuccess -> {
-						requireContext().setEnableBiometric(true)
-						binding.itemBiometric.subtitle = getString(R.string.text_on)
-						binding.swBiometric.setOnCheckedChangeListener(null)
-						binding.swBiometric.isChecked = true
-						binding.swBiometric.setOnCheckedChangeListener(biometricCheckedChange)
-					}
-
-					else -> Unit
 				}
+
+				BiometricHelper.BiometricResult.AuthenticationSuccess -> {
+					requireContext().setEnableBiometric(true)
+					binding.itemBiometric.subtitle = getString(R.string.text_on)
+					binding.swBiometric.setOnCheckedChangeListener(null)
+					binding.swBiometric.isChecked = true
+					binding.swBiometric.setOnCheckedChangeListener(biometricCheckedChange)
+				}
+
+				else -> Unit
 			}
 		}
 	}

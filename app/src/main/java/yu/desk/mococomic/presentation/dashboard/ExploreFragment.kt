@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentExploreBinding
 import yu.desk.mococomic.domain.model.Comic
@@ -62,41 +58,37 @@ class ExploreFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			viewModel.exploreResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						onLoading()
-					},
-					onSuccess = { data ->
-						onSuccess(data)
-					},
-					onError = { message ->
-						onError(message)
-					},
-				)
-			}
+		viewModel.exploreResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					onLoading()
+				},
+				onSuccess = { data ->
+					onSuccess(data)
+				},
+				onError = { message ->
+					onError(message)
+				},
+			)
 		}
 
-		lifecycleScope.launch {
-			viewModel.blockedComicResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						showLoading()
-					},
-					onSuccess = { data ->
-						hideLoading()
-						binding.root.showSnackBar("Comic '${data.title}' blocked successfully!")
-						rvExploreAdapter.removeItem(data)
-					},
-					onError = { msg ->
-						hideLoading()
-						binding.root.showSnackBar("Comic blocked failed!\n$msg")
-					},
-				)
-			}
+		viewModel.blockedComicResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					showLoading()
+				},
+				onSuccess = { data ->
+					hideLoading()
+					binding.root.showSnackBar("Comic '${data.title}' blocked successfully!")
+					rvExploreAdapter.removeItem(data)
+				},
+				onError = { msg ->
+					hideLoading()
+					binding.root.showSnackBar("Comic blocked failed!\n$msg")
+				},
+			)
 		}
 
 		findNavController(R.id.navHostMain).currentBackStackEntry?.savedStateHandle?.let { stateHandle ->

@@ -13,12 +13,10 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentComicDetailBinding
@@ -102,99 +100,87 @@ class ComicDetailFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			viewModel.comicDetailResponse
-				.flowWithLifecycle(lifecycle)
-				.collectLatest {
-					apiResponseHandler(
-						uiState = it,
-						onLoading = {
-							onLoading()
-						},
-						onSuccess = { data ->
-							onLoading(false)
-							onSuccess(data)
-						},
-						onError = { msg ->
-							onError(msg)
-						},
-					)
-				}
+		viewModel.comicDetailResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					onLoading()
+				},
+				onSuccess = { data ->
+					onLoading(false)
+					onSuccess(data)
+				},
+				onError = { msg ->
+					onError(msg)
+				},
+			)
 		}
 
-		lifecycleScope.launch {
-			viewModel.saveFavoriteResponse
-				.flowWithLifecycle(lifecycle)
-				.collectLatest {
-					apiResponseHandler(
-						uiState = it,
-						onLoading = {
-							showLoading()
-						},
-						onError = { msg ->
-							hideLoading()
-							binding.root.showSnackBar(msg.toString())
-						},
-						onSuccess = { data ->
-							hideLoading()
-							binding.btnFavorite.isChecked = data.first == "save"
-							binding.btnBottomFavorite.isChecked = data.first == "save"
-							if (data.first == "save") {
-								binding.root.showSnackBar(getString(R.string.text_comic_saved_favorite_successfully, data.second.title))
-								findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = true))
-							} else {
-								binding.root.showSnackBar(getString(R.string.text_comic_deleted_favorite_successfully, data.second.title))
-								findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = false))
-							}
-						},
-					)
-				}
+		viewModel.saveFavoriteResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					showLoading()
+				},
+				onError = { msg ->
+					hideLoading()
+					binding.root.showSnackBar(msg.toString())
+				},
+				onSuccess = { data ->
+					hideLoading()
+					binding.btnFavorite.isChecked = data.first == "save"
+					binding.btnBottomFavorite.isChecked = data.first == "save"
+					if (data.first == "save") {
+						binding.root.showSnackBar(getString(R.string.text_comic_saved_favorite_successfully, data.second.title))
+						findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = true))
+					} else {
+						binding.root.showSnackBar(getString(R.string.text_comic_deleted_favorite_successfully, data.second.title))
+						findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.FAVORITE_COMIC, data.second.copy(isFavorite = false))
+					}
+				},
+			)
 		}
 
-		lifecycleScope.launch {
-			viewModel.chapterList.flowWithLifecycle(lifecycle).collectLatest { list ->
-				binding.apply {
-					navView.rvListChapter.initRecyclerView {
-						return@initRecyclerView ListChapterAdapter().apply {
-							setItem(list)
-							setOnChapterClickListener { item ->
-								binding.drawer.close()
-								navigateToChapterDetail(item)
-							}
+		viewModel.chapterList.launchAndCollectLatest(viewLifecycleOwner) { list ->
+			binding.apply {
+				navView.rvListChapter.initRecyclerView {
+					return@initRecyclerView ListChapterAdapter().apply {
+						setItem(list)
+						setOnChapterClickListener { item ->
+							binding.drawer.close()
+							navigateToChapterDetail(item)
 						}
 					}
+				}
 
-					rvChapters.initRecyclerView {
-						return@initRecyclerView ListChapterAdapter().apply {
-							setItem(list.take(5))
-							setOnChapterClickListener { item ->
-								navigateToChapterDetail(item)
-							}
+				rvChapters.initRecyclerView {
+					return@initRecyclerView ListChapterAdapter().apply {
+						setItem(list.take(5))
+						setOnChapterClickListener { item ->
+							navigateToChapterDetail(item)
 						}
 					}
 				}
 			}
 		}
 
-		lifecycleScope.launch {
-			viewModel.blockedComicResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						showLoading()
-					},
-					onSuccess = { data ->
-						hideLoading()
-						binding.root.showSnackBar(getString(R.string.text_comic_blocked_successfully, data.title))
-						findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.BLOCKED_COMIC, data)
-						findNavController().popBackStack()
-					},
-					onError = { msg ->
-						hideLoading()
-						binding.root.showSnackBar(getString(R.string.text_comic_blocked_failed, msg))
-					},
-				)
-			}
+		viewModel.blockedComicResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					showLoading()
+				},
+				onSuccess = { data ->
+					hideLoading()
+					binding.root.showSnackBar(getString(R.string.text_comic_blocked_successfully, data.title))
+					findNavController().previousBackStackEntry?.savedStateHandle?.set(MyConstants.BLOCKED_COMIC, data)
+					findNavController().popBackStack()
+				},
+				onError = { msg ->
+					hideLoading()
+					binding.root.showSnackBar(getString(R.string.text_comic_blocked_failed, msg))
+				},
+			)
 		}
 	}
 

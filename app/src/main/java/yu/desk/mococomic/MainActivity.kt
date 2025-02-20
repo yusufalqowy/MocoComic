@@ -11,11 +11,9 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.databinding.ActivityMainBinding
 import yu.desk.mococomic.utils.*
@@ -74,40 +72,38 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			biometricHelper.promptResults.flowWithLifecycle(lifecycle).collectLatest {
-				when (it) {
-					is BiometricHelper.BiometricResult.AuthenticationError -> {
-						finishAffinity()
-					}
+		biometricHelper.promptResults.launchAndCollectLatest(this) {
+			when (it) {
+				is BiometricHelper.BiometricResult.AuthenticationError -> {
+					finishAffinity()
+				}
 
-					BiometricHelper.BiometricResult.AuthenticationNotSet -> {
-						if (Build.VERSION.SDK_INT >= 30) {
-							val enrollIntent =
-								Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-									putExtra(
-										Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-										BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
-									)
-								}
-							enrollLauncher.launch(enrollIntent)
-						} else {
-							isWaiting = false
-						}
-					}
-
-					BiometricHelper.BiometricResult.AuthenticationSuccess -> {
+				BiometricHelper.BiometricResult.AuthenticationNotSet -> {
+					if (Build.VERSION.SDK_INT >= 30) {
+						val enrollIntent =
+							Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+								putExtra(
+									Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+									BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
+								)
+							}
+						enrollLauncher.launch(enrollIntent)
+					} else {
 						isWaiting = false
 					}
+				}
 
-					BiometricHelper.BiometricResult.AuthenticationFailed -> {
-						finishAffinity()
-					}
+				BiometricHelper.BiometricResult.AuthenticationSuccess -> {
+					isWaiting = false
+				}
 
-					else -> {
-						setEnableBiometric(false)
-						isWaiting = false
-					}
+				BiometricHelper.BiometricResult.AuthenticationFailed -> {
+					finishAffinity()
+				}
+
+				else -> {
+					setEnableBiometric(false)
+					isWaiting = false
 				}
 			}
 		}

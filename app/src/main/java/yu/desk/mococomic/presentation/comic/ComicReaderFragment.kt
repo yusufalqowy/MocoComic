@@ -14,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentComicReaderBinding
@@ -110,89 +108,77 @@ class ComicReaderFragment :
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			scrollSpeed.flowWithLifecycle(lifecycle).collectLatest {
-				binding.autoScrollLayout.apply {
-					btnMinus.isEnabled = it > minScrollSpeed
-					btnPlus.isEnabled = it < maxScrollSpeed
-				}
+		scrollSpeed.launchAndCollectLatest(viewLifecycleOwner) {
+			binding.autoScrollLayout.apply {
+				btnMinus.isEnabled = it > minScrollSpeed
+				btnPlus.isEnabled = it < maxScrollSpeed
 			}
 		}
 
-		lifecycleScope.launch {
-			isAutoScrollEnable.flowWithLifecycle(lifecycle).collectLatest {
-				binding.autoScrollLayout.apply {
-					btnPlay.isChecked = it
-					binding.autoScrollLayout.root.layoutParams.apply {
-						if (this is CoordinatorLayout.LayoutParams) {
-							behavior =
-								if (it) {
-									null
-								} else {
-									HideBottomViewOnScrollBehavior<View>()
-								}
-						}
-					}
-				}
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.chapterList.flowWithLifecycle(lifecycle).collectLatest { list ->
-				binding.navView.rvListChapter.initRecyclerView {
-					return@initRecyclerView ListChapterAdapter().apply {
-						setItem(list)
-						setSelectedChapter(viewModel.chapter)
-						setOnChapterClickListener { item ->
-							viewModel.setCurrentChapter(item)
-							viewModel.getChapterDetail()
-							binding.drawer.close()
-						}
-					}
-				}
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.chapterDetailResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						onLoading()
-					},
-					onSuccess = { data ->
-						onSuccess(data)
-					},
-					onError = { msg ->
-						onError(msg)
-					},
-				)
-			}
-		}
-
-		lifecycleScope.launch {
-			viewModel.saveFavoriteResponse
-				.flowWithLifecycle(lifecycle)
-				.collectLatest {
-					apiResponseHandler(
-						uiState = it,
-						onLoading = {
-							showLoading()
-						},
-						onError = { msg ->
-							hideLoading()
-							binding.root.showSnackBar(msg.toString())
-						},
-						onSuccess = { data ->
-							hideLoading()
-							if (data.first == "save") {
-								binding.root.showSnackBar("Comic '${data.second.title}' saved to favorite successfully!")
+		isAutoScrollEnable.launchAndCollectLatest(viewLifecycleOwner) {
+			binding.autoScrollLayout.apply {
+				btnPlay.isChecked = it
+				binding.autoScrollLayout.root.layoutParams.apply {
+					if (this is CoordinatorLayout.LayoutParams) {
+						behavior =
+							if (it) {
+								null
 							} else {
-								binding.root.showSnackBar("Comic '${data.second.title}' deleted from favorite successfully!")
+								HideBottomViewOnScrollBehavior<View>()
 							}
-						},
-					)
+					}
 				}
+			}
+		}
+
+		viewModel.chapterList.launchAndCollectLatest(viewLifecycleOwner) { list ->
+			binding.navView.rvListChapter.initRecyclerView {
+				return@initRecyclerView ListChapterAdapter().apply {
+					setItem(list)
+					setSelectedChapter(viewModel.chapter)
+					setOnChapterClickListener { item ->
+						viewModel.setCurrentChapter(item)
+						viewModel.getChapterDetail()
+						binding.drawer.close()
+					}
+				}
+			}
+		}
+
+		viewModel.chapterDetailResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					onLoading()
+				},
+				onSuccess = { data ->
+					onSuccess(data)
+				},
+				onError = { msg ->
+					onError(msg)
+				},
+			)
+		}
+
+		viewModel.saveFavoriteResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					showLoading()
+				},
+				onError = { msg ->
+					hideLoading()
+					binding.root.showSnackBar(msg.toString())
+				},
+				onSuccess = { data ->
+					hideLoading()
+					if (data.first == "save") {
+						binding.root.showSnackBar("Comic '${data.second.title}' saved to favorite successfully!")
+					} else {
+						binding.root.showSnackBar("Comic '${data.second.title}' deleted from favorite successfully!")
+					}
+				},
+			)
 		}
 	}
 

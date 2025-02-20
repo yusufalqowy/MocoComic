@@ -19,10 +19,7 @@ import yu.desk.mococomic.presentation.adapter.PagingFooterStateAdapter
 import yu.desk.mococomic.presentation.comic.ComicDetailFragmentArgs
 import yu.desk.mococomic.presentation.component.StateView
 import yu.desk.mococomic.presentation.dashboard.DashboardViewModel
-import yu.desk.mococomic.utils.AuthHelper
-import yu.desk.mococomic.utils.findNavController
-import yu.desk.mococomic.utils.initRecyclerView
-import yu.desk.mococomic.utils.navigateWithAnimation
+import yu.desk.mococomic.utils.*
 import javax.security.auth.login.LoginException
 
 @AndroidEntryPoint
@@ -115,10 +112,8 @@ class ChapterHistoryFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			viewModel.chapterHistoryPagingData.collect {
-				pagingAdapter.submitData(it)
-			}
+		viewModel.chapterHistoryPagingData.launchAndCollectLatest(viewLifecycleOwner) {
+			pagingAdapter.submitData(it)
 		}
 	}
 

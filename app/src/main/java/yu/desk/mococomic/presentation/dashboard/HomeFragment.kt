@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navOptions
 import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import yu.desk.mococomic.R
 import yu.desk.mococomic.databinding.FragmentHomeBinding
 import yu.desk.mococomic.domain.model.Comic
@@ -63,21 +59,19 @@ class HomeFragment : Fragment() {
 	}
 
 	private fun initObserver() {
-		lifecycleScope.launch {
-			viewModel.homeResponse.flowWithLifecycle(lifecycle).collectLatest {
-				apiResponseHandler(
-					uiState = it,
-					onLoading = {
-						onLoading()
-					},
-					onSuccess = { data ->
-						onSuccess(data)
-					},
-					onError = { message ->
-						onError(message)
-					},
-				)
-			}
+		viewModel.homeResponse.launchAndCollectLatest(viewLifecycleOwner) {
+			apiResponseHandler(
+				uiState = it,
+				onLoading = {
+					onLoading()
+				},
+				onSuccess = { data ->
+					onSuccess(data)
+				},
+				onError = { message ->
+					onError(message)
+				},
+			)
 		}
 
 		findNavController(R.id.navHostMain).currentBackStackEntry?.savedStateHandle?.let { stateHandle ->

@@ -42,6 +42,10 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -59,6 +63,9 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.sidesheet.SideSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import yu.desk.mococomic.R
 import yu.desk.mococomic.domain.model.Chapter
@@ -423,10 +430,12 @@ suspend fun Chapter.getCommentUrl(): String {
 }
 
 fun Fragment.showLoading() {
+	Log.e(this.tag, this.javaClass.simpleName)
 	LoadingDialog.show(childFragmentManager)
 }
 
 fun Fragment.hideLoading() {
+	Log.e(this.tag, this.javaClass.simpleName)
 	LoadingDialog.hide(childFragmentManager)
 }
 
@@ -591,5 +600,17 @@ fun getLanguageIcon(locale: Locale): Int {
 	return when (locale.language) {
 		"in" -> R.drawable.ic_indonesia
 		else -> R.drawable.ic_usa
+	}
+}
+
+fun <T> Flow<T>.launchAndCollectLatest(lifecycleOwner: LifecycleOwner, lifecycleState: Lifecycle.State = Lifecycle.State.STARTED, collector: suspend (value: T) -> Unit) {
+	lifecycleOwner.apply {
+		lifecycleScope.launch {
+			repeatOnLifecycle(lifecycleState) {
+				this@launchAndCollectLatest.collectLatest {
+					collector(it)
+				}
+			}
+		}
 	}
 }

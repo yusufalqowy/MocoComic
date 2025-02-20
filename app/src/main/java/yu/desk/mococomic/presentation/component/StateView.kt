@@ -41,8 +41,12 @@ class StateView
 
 		private fun initView() {
 			binding.apply {
-				alertView.addOnBackClickListener(onBackClickListener)
-				alertView.addOnActionClickListener(onActionClickListener)
+				alertView.addOnBackClickListener {
+					onBackClickListener.invoke()
+				}
+				alertView.addOnActionClickListener {
+					onActionClickListener.invoke()
+				}
 				when (state) {
 					State.LOADING -> {
 						binding.alertView.setVisible(false)
