@@ -299,6 +299,26 @@ class ComicRepositoryImpl(
 			}
 		}
 
+	override fun deleteChapterHistory(firebaseChapter: FirebaseChapter): Flow<ApiState<FirebaseChapter>> =
+		flow {
+			val currentUser =
+				AuthHelper.getUser() ?: return@flow emit(ApiState.Failure(401, "Please login to continue"))
+			try {
+				firestore
+					.collection("user_data")
+					.document(currentUser.uid)
+					.collection("histories")
+					.document(firebaseChapter.slug)
+					.delete()
+					.await()
+				comicDao.deleteChapterHistory(ChapterHistoryEntity(slug = firebaseChapter.slug, comicSlug = firebaseChapter.comic?.slug ?: ""))
+				emit(ApiState.Success(firebaseChapter))
+			} catch (e: Exception) {
+				e.printStackTrace()
+				emit(ApiState.Error(e.message ?: "Something went wrong"))
+			}
+		}
+
 	override suspend fun deleteFavoriteDb() {
 		comicDao.deleteFavoriteComic()
 	}
@@ -417,7 +437,7 @@ class ComicRepositoryImpl(
 		}
 	}
 
-	override fun getChapterHistoryPagingData(): Flow<PagingData<FirebaseChapter>> {
+	override fun getChapterHistoryPagingData(searchQuery: String?): Flow<PagingData<FirebaseChapter>> {
 		val currentUser =
 			AuthHelper.getUser() ?: return flow {
 				emit(
@@ -431,14 +451,21 @@ class ComicRepositoryImpl(
 					),
 				)
 			}
-		val query =
+		var query =
 			FirebaseFirestore
 				.getInstance()
 				.collection("user_data")
 				.document(currentUser.uid)
 				.collection("histories")
-				.orderBy("created_at", Query.Direction.DESCENDING)
 				.limit(15)
+
+		if (!searchQuery.isNullOrBlank()) {
+			query =
+				query.whereGreaterThanOrEqualTo("comic.title", searchQuery)
+					.whereLessThan("comic.title", searchQuery + "\uf8ff")
+		}
+
+		query = query.orderBy("created_at", Query.Direction.DESCENDING)
 
 		return Pager(
 			config = PagingConfig(pageSize = 15, enablePlaceholders = true, initialLoadSize = 15),

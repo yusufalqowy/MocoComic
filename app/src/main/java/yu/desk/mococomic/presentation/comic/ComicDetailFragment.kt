@@ -24,6 +24,7 @@ import yu.desk.mococomic.domain.model.Chapter
 import yu.desk.mococomic.domain.model.ComicDetail
 import yu.desk.mococomic.presentation.adapter.ListChapterAdapter
 import yu.desk.mococomic.presentation.component.StateView
+import yu.desk.mococomic.presentation.history.ChapterHistoryFragment
 import yu.desk.mococomic.utils.*
 import kotlin.math.abs
 
@@ -409,6 +410,9 @@ class ComicDetailFragment : Fragment() {
 	private fun navigateToChapterDetail(chapter: Chapter) {
 		// Reset chapter
 		viewModel.setCurrentChapter(Chapter())
+		if (!chapter.isAlreadyRead) {
+			findNavController().previousBackStackEntry?.savedStateHandle?.set(ChapterHistoryFragment.RESULT_KEY, true)
+		}
 		val direction = ComicDetailFragmentDirections.actionComicDetailToComicReader(chapter)
 		findNavController().navigateWithAnimation(direction)
 	}

@@ -69,4 +69,5 @@
 	<string name="text_privacy_policy">Privacy Policy</string>
 	<string name="text_we_appreciate_your_feedback">We appreciate your feedback. Send your suggestions or questions via email.</string>
 	<string name="text_find_us_on_discord">Find us on Discord</string>
+	<string name="text_remove_item">Remove Item</string>
 </resources>

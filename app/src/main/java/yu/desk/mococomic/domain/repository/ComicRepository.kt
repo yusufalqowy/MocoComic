@@ -19,7 +19,7 @@ interface ComicRepository {
 
 	fun getChapterDetail(slug: String): Flow<ApiState<List<String>>>
 
-	fun getChapterHistoryPagingData(): Flow<PagingData<FirebaseChapter>>
+	fun getChapterHistoryPagingData(searchQuery: String?): Flow<PagingData<FirebaseChapter>>
 
 	fun getFavoriteComicPagingData(): Flow<PagingData<Comic>>
 
@@ -43,6 +43,8 @@ interface ComicRepository {
 	fun saveChapterHistory(firebaseChapter: FirebaseChapter): Flow<ApiState<Boolean>>
 
 	fun deleteUserFavoriteComic(comic: Comic): Flow<ApiState<Comic>>
+
+	fun deleteChapterHistory(firebaseChapter: FirebaseChapter): Flow<ApiState<FirebaseChapter>>
 
 	suspend fun deleteFavoriteDb()
 

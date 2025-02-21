@@ -6,9 +6,11 @@ import androidx.paging.cachedIn
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import yu.desk.mococomic.domain.model.Comic
+import yu.desk.mococomic.domain.model.FirebaseChapter
 import yu.desk.mococomic.domain.model.Summary
 import yu.desk.mococomic.domain.usecase.ComicUseCase
 import yu.desk.mococomic.utils.*
@@ -26,6 +28,7 @@ class DashboardViewModel
 		var filterGenres = emptyList<FilterGenre>()
 		var canLoadMore = false
 		val currentUser = Firebase.auth.currentUser
+		val query = MutableStateFlow("")
 		private var page = 1
 		private var listExploreComic = mutableListOf<Comic>()
 		private val _homeResponse = MutableStateFlow<UIState<Summary>>(UIState.Empty())
@@ -34,6 +37,8 @@ class DashboardViewModel
 		val exploreResponse = _exploreResponse.asStateFlow()
 		private val _deleteUserFavoriteResponse = MutableSharedFlow<UIState<Comic>>()
 		val deleteUserFavorite = _deleteUserFavoriteResponse.asSharedFlow()
+		private val _deleteChapterHistoryResponse = MutableSharedFlow<UIState<FirebaseChapter>>()
+		val deleteChapterHistoryResponse = _deleteChapterHistoryResponse.asSharedFlow()
 		private val _blockedComicResponse = MutableSharedFlow<UIState<Comic>>()
 		val blockedComicResponse = _blockedComicResponse.asSharedFlow()
 		private val _clearDbResponse = MutableSharedFlow<UIState<Boolean>>()
@@ -41,7 +46,26 @@ class DashboardViewModel
 
 		val favoriteComicPagingData = comicUseCase.getFavoriteComicPagingData().cachedIn(viewModelScope)
 
-		val chapterHistoryPagingData = comicUseCase.getChapterHistoryPagingData().cachedIn(viewModelScope)
+		@OptIn(ExperimentalCoroutinesApi::class)
+		val chapterHistoryPagingData =
+			query.flatMapLatest {
+				comicUseCase.getChapterHistoryPagingData(it)
+			}.cachedIn(viewModelScope)
+
+		fun searchChapterHistory(searchQuery: String) {
+			viewModelScope.launch {
+				query.emit(searchQuery)
+			}
+		}
+
+		fun deleteChapterHistory(chapter: FirebaseChapter) {
+			viewModelScope.launch {
+				_deleteChapterHistoryResponse.emit(UIState.Loading())
+				comicUseCase.deleteChapterHistory(chapter).collectLatest {
+					_deleteChapterHistoryResponse.emit(it)
+				}
+			}
+		}
 
 		fun syncFavoriteComicFirebase() {
 			viewModelScope.launch {

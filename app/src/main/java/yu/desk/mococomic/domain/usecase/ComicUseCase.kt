@@ -1,9 +1,7 @@
 package yu.desk.mococomic.domain.usecase
 
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import yu.desk.mococomic.domain.model.Comic
 import yu.desk.mococomic.domain.model.ComicDetail
 import yu.desk.mococomic.domain.model.FirebaseChapter
@@ -30,7 +28,7 @@ interface ComicUseCase {
 
 	fun getFavoriteComicPagingData(): Flow<PagingData<Comic>>
 
-	fun getChapterHistoryPagingData(): Flow<PagingData<FirebaseChapter>>
+	fun getChapterHistoryPagingData(searchQuery: String? = null): Flow<PagingData<FirebaseChapter>>
 
 	fun getFilterComic(
 		status: FilterStatus,
@@ -52,6 +50,8 @@ interface ComicUseCase {
 	fun saveChapterHistory(firebaseChapter: FirebaseChapter): Flow<UIState<Boolean>>
 
 	fun deleteUserFavoriteComic(comic: Comic): Flow<UIState<Comic>>
+
+	fun deleteChapterHistory(firebaseChapter: FirebaseChapter): Flow<UIState<FirebaseChapter>>
 
 	fun setUserFavoriteComic(
 		comic: Comic,
@@ -97,7 +97,7 @@ class ComicUseCaseImpl(
 
 	override fun getFavoriteComicPagingData(): Flow<PagingData<Comic>> = repository.getFavoriteComicPagingData()
 
-	override fun getChapterHistoryPagingData(): Flow<PagingData<FirebaseChapter>> = repository.getChapterHistoryPagingData()
+	override fun getChapterHistoryPagingData(searchQuery: String?): Flow<PagingData<FirebaseChapter>> = repository.getChapterHistoryPagingData(searchQuery)
 
 	override fun getFilterComic(
 		status: FilterStatus,
@@ -131,6 +131,8 @@ class ComicUseCaseImpl(
 		repository.deleteUserFavoriteComic(comic).map {
 			it.toUiState()
 		}
+
+	override fun deleteChapterHistory(firebaseChapter: FirebaseChapter): Flow<UIState<FirebaseChapter>> = repository.deleteChapterHistory(firebaseChapter).map { it.toUiState() }
 
 	override fun setUserFavoriteComic(
 		comic: Comic,

@@ -34,6 +34,9 @@ interface ComicDao {
 	suspend fun deleteFavoriteComic(comic: FavoriteEntity)
 
 	@Delete
+	suspend fun deleteChapterHistory(chapter: ChapterHistoryEntity)
+
+	@Delete
 	suspend fun deleteBlockedComic(comic: BlockedEntity)
 
 	@Query("SELECT * FROM favoriteentity")
