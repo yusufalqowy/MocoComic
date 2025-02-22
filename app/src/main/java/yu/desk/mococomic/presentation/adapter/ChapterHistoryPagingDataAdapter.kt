@@ -102,8 +102,8 @@ class ChapterHistoryPagingDataAdapter : PagingDataAdapter<FirebaseChapter, Chapt
 		val listItems = snapshot().toMutableList().also { it.removeAll(deletedItems) }
 		val item = listItems.find { it?.slug == chapter.slug }
 		val position = listItems.indexOf(item)
-		notifyItemRemoved(position)
 		deletedItems.add(chapter)
+		notifyItemChanged(position)
 	}
 
 	fun onItemClickListener(listener: (Comic) -> Unit) {
