@@ -12,6 +12,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -49,17 +50,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.window.layout.WindowMetricsCalculator
 import coil3.Image
+import coil3.ImageLoader
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.placeholder
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.sidesheet.SideSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -153,23 +155,27 @@ fun ImageView.loadImage(
 	enableLoading: Boolean = true,
 	result: ((Image) -> Unit)? = null,
 ) {
-	val firstScaleType = this.scaleType
-	this.setBackgroundColor(
-		MaterialColors.getColor(this.context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY),
+	val firstScaleType = scaleType
+	setBackgroundColor(
+		MaterialColors.getColor(context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY),
 	)
-	this.load(url) {
+	val imageLoader = ImageLoader(context)
+	load(data = url, imageLoader = imageLoader) {
 		crossfade(true)
+		diskCacheKey(url)
+		memoryCacheKey(url)
 		if (enableLoading) {
 			scaleType = ImageView.ScaleType.CENTER_CROP
-			val drawable =
-				CircularProgressIndicator(this@loadImage.context).apply {
-					indicatorInset = 16.dp
-					indicatorSize = 8.dp
-					trackCornerRadius = 4.dp
-					trackThickness = 1.dp
-					isIndeterminate = true
+			val primaryColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(context, context.primarySystemColor()))
+			val loadingDrawable =
+				CircularProgressDrawable(context).also {
+					it.strokeWidth = 10f
+					it.centerRadius = 40f
+					it.strokeCap = Paint.Cap.ROUND
+					it.setColorSchemeColors(primaryColor)
+					it.start()
 				}
-			placeholder(drawable.indeterminateDrawable)
+			placeholder(loadingDrawable)
 		}
 		listener(
 			onError = { _, _ ->

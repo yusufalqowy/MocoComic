@@ -188,7 +188,7 @@ class ComicDetailFragment : Fragment() {
 	private fun initView() {
 		binding.apply {
 			viewModel.comic.let {
-				ivCoverBackground.loadImage(it.cover, enableLoading = false) {
+				ivCoverBackground.loadImage(it.cover) {
 					ivCoverBackground.scaleCropTop()
 				}
 				ivCover.loadImage(it.cover)
@@ -345,10 +345,10 @@ class ComicDetailFragment : Fragment() {
 
 	private fun onSuccess(data: ComicDetail) {
 		binding.apply {
-			ivCoverBackground.loadImage(data.cover, false) {
+			ivCoverBackground.loadImage(data.cover) {
 				ivCoverBackground.scaleCropTop()
-				ivCover.loadImage(data.cover)
 			}
+			ivCover.loadImage(data.cover)
 			swipeRefresh.isRefreshing = false
 			tvTitle.text = data.title.ifEmpty { "-" }
 			collapsingToolbar.title = data.title.ifEmpty { "-" }
