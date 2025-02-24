@@ -17,6 +17,7 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.Settings
 import android.text.format.DateUtils
@@ -54,11 +55,15 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.window.layout.WindowMetricsCalculator
-import coil3.Image
-import coil3.ImageLoader
-import coil3.load
-import coil3.request.crossfade
-import coil3.request.placeholder
+import coil3.*
+import coil3.disk.DiskCache
+import coil3.disk.directory
+import coil3.gif.AnimatedImageDecoder
+import coil3.gif.GifDecoder
+import coil3.memory.MemoryCache
+import coil3.request.*
+import coil3.util.DebugLogger
+import coil3.util.Logger
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
@@ -153,40 +158,94 @@ fun Context.getDisplayMetrics(): DisplayMetrics = this.resources.displayMetrics
 fun ImageView.loadImage(
 	url: String,
 	enableLoading: Boolean = true,
-	result: ((Image) -> Unit)? = null,
+	result: ((Drawable) -> Unit)? = null,
 ) {
-	val firstScaleType = scaleType
-	setBackgroundColor(
-		MaterialColors.getColor(context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY),
-	)
-	val imageLoader = ImageLoader(context)
-	load(data = url, imageLoader = imageLoader) {
-		crossfade(true)
-		diskCacheKey(url)
-		memoryCacheKey(url)
-		if (enableLoading) {
-			scaleType = ImageView.ScaleType.CENTER_CROP
-			val primaryColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(context, context.primarySystemColor()))
-			val loadingDrawable =
-				CircularProgressDrawable(context).also {
-					it.strokeWidth = 10f
-					it.centerRadius = 40f
-					it.strokeCap = Paint.Cap.ROUND
-					it.setColorSchemeColors(primaryColor)
-					it.start()
-				}
-			placeholder(loadingDrawable)
-		}
-		listener(
-			onError = { _, _ ->
-				scaleType = firstScaleType
-			},
-			onSuccess = { _, res ->
-				scaleType = firstScaleType
-				result?.invoke(res.image)
-			},
-		)
+	var firstScaleType = scaleType
+	if (tag != null) {
+		firstScaleType = tag as ImageView.ScaleType
+	} else {
+		tag = firstScaleType
 	}
+	val primaryColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(context, context.primarySystemColor()))
+	val loadingDrawable =
+		CircularProgressDrawable(context).also {
+			it.strokeWidth = 10f
+			it.centerRadius = 40f
+			it.strokeCap = Paint.Cap.ROUND
+			it.setColorSchemeColors(primaryColor)
+			it.start()
+		}
+	val placeholder =
+		if (enableLoading) {
+			loadingDrawable
+		} else {
+			drawable
+		}
+	setBackgroundColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOutlineVariant, Color.DKGRAY))
+	val request =
+		ImageRequest.Builder(context)
+			.data(url)
+			.target(this)
+			.diskCacheKey(url)
+			.memoryCacheKey(url)
+			.placeholder(placeholder)
+			.placeholderMemoryCacheKey(url)
+			.listener(
+				onError = { _, _ ->
+					scaleType = ImageView.ScaleType.FIT_CENTER
+				},
+				onSuccess = { _, res ->
+					scaleType = firstScaleType
+					val image = res.image.asDrawable(resources)
+					setImageDrawable(image)
+					result?.invoke(image)
+				},
+				onCancel = {
+					scaleType = firstScaleType
+				},
+				onStart = {
+					scaleType =
+						if (enableLoading) {
+							ImageView.ScaleType.FIT_CENTER
+						} else {
+							firstScaleType
+						}
+				},
+			)
+			.build()
+	context.getImageLoader().enqueue(request)
+}
+
+fun Context.getImageLoader(): ImageLoader {
+	val errorImage = ResourcesCompat.getDrawable(resources, R.drawable.bg_error, null)
+	errorImage?.setTint(MaterialColors.getColor(this, com.google.android.material.R.attr.colorError, 0))
+	return ImageLoader
+		.Builder(this)
+		.memoryCachePolicy(CachePolicy.ENABLED)
+		.diskCachePolicy(CachePolicy.ENABLED)
+		.crossfade(true)
+		.memoryCache {
+			MemoryCache
+				.Builder()
+				.maxSizePercent(this, 0.5)
+				.weakReferencesEnabled(true)
+				.build()
+		}.diskCache {
+			DiskCache
+				.Builder()
+				.maxSizePercent(0.5)
+				.directory(cacheDir)
+				.build()
+		}
+		.error(errorImage?.asImage())
+		.logger(DebugLogger(Logger.Level.Warn))
+		.components {
+			if (SDK_INT >= 28) {
+				add(AnimatedImageDecoder.Factory())
+			} else {
+				add(GifDecoder.Factory())
+			}
+		}.build()
 }
 
 fun ImageView.scaleCropTop() {

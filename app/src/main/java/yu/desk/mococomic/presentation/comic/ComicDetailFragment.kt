@@ -345,10 +345,10 @@ class ComicDetailFragment : Fragment() {
 
 	private fun onSuccess(data: ComicDetail) {
 		binding.apply {
-			ivCoverBackground.loadImage(data.cover) {
+			ivCoverBackground.loadImage(data.cover, false) { img ->
 				ivCoverBackground.scaleCropTop()
+				ivCover.setImageDrawable(img)
 			}
-			ivCover.loadImage(data.cover)
 			swipeRefresh.isRefreshing = false
 			tvTitle.text = data.title.ifEmpty { "-" }
 			collapsingToolbar.title = data.title.ifEmpty { "-" }

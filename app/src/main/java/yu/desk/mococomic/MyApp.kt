@@ -2,6 +2,7 @@ package yu.desk.mococomic
 
 import android.app.Application
 import android.content.res.Configuration
+import android.os.Build.VERSION.SDK_INT
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import coil3.ImageLoader
@@ -10,6 +11,7 @@ import coil3.SingletonImageLoader
 import coil3.asImage
 import coil3.disk.DiskCache
 import coil3.disk.directory
+import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
 import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
@@ -61,7 +63,11 @@ class MyApp :
 			.error(errorImage?.asImage())
 			.logger(DebugLogger(Logger.Level.Warn))
 			.components {
-				add(GifDecoder.Factory())
+				if (SDK_INT >= 28) {
+					add(AnimatedImageDecoder.Factory())
+				} else {
+					add(GifDecoder.Factory())
+				}
 			}.build()
 	}
 }
