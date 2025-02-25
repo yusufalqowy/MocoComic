@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.paging.LoadState
 import androidx.paging.filter
 import com.google.android.material.textfield.TextInputLayout
@@ -215,16 +214,7 @@ class ChapterHistoryFragment : Fragment() {
 	private fun navigateToLogin() {
 		lifecycleScope.launch {
 			AuthHelper.signOut(requireContext()) {
-				findNavController(R.id.navHostMain).navigateWithAnimation(
-					R.id.authLogin,
-					null,
-					navOptions {
-						popUpTo(R.id.authLogin) {
-							inclusive = true
-						}
-						launchSingleTop = true
-					},
-				)
+				findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_chapterHistoryFragment_to_authLogin)
 			}
 		}
 	}

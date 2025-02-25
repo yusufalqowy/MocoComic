@@ -136,7 +136,7 @@ class ProfileFragment : Fragment() {
 	}
 
 	private fun navigateToLogin() {
-		findNavController(R.id.navHostMain).navigateWithAnimation(R.id.action_dashboardMain_to_authLogin)
+		findNavController(R.id.navHostMain).navigate(R.id.action_dashboardMain_to_authLogin)
 	}
 
 	private fun navigateToChapterHistory() {

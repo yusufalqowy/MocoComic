@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navOptions
 import androidx.paging.LoadState
 import androidx.paging.filter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -134,7 +133,11 @@ class FavoriteFragment : Fragment() {
 							actionButtonText = getString(R.string.text_login),
 						)
 						stateView.addOnActionClickListener {
-							navigateToLogin()
+							lifecycleScope.launch {
+								AuthHelper.signOut(requireContext()) {
+									navigateToLogin()
+								}
+							}
 						}
 					}
 
@@ -192,20 +195,7 @@ class FavoriteFragment : Fragment() {
 	}
 
 	private fun navigateToLogin() {
-		lifecycleScope.launch {
-			AuthHelper.signOut(requireContext()) {
-				findNavController(R.id.navHostMain).navigateWithAnimation(
-					R.id.authLogin,
-					null,
-					navOptions {
-						popUpTo(R.id.authLogin) {
-							inclusive = true
-						}
-						launchSingleTop = true
-					},
-				)
-			}
-		}
+		findNavController(R.id.navHostMain).navigate(R.id.action_dashboardMain_to_authLogin)
 	}
 
 	private fun navigateToComicDetail(comic: Comic) {

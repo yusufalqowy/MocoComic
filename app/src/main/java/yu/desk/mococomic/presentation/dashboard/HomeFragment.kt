@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.navOptions
 import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import yu.desk.mococomic.R
@@ -185,10 +184,9 @@ class HomeFragment : Fragment() {
 			.navigateWithAnimation(
 				R.id.comicNavigation,
 				ComicDetailFragmentArgs.Builder(comic).build().toBundle(),
-				navOptions {
-					popUpTo(R.id.dashboardMain)
-					launchSingleTop = true
-				},
-			)
+			) {
+				popUpTo(R.id.dashboardMain)
+				launchSingleTop = true
+			}
 	}
 }

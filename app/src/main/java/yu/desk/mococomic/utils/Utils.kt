@@ -331,42 +331,20 @@ fun Fragment.findNavController(
 fun NavController.navigateWithAnimation(
 	@IdRes id: Int,
 	args: Bundle? = null,
-	navOptions: NavOptions? = null,
+	builder: NavOptionsBuilder.() -> Unit = {},
 ) {
 	try {
-		val newNavOptions =
-			navOptions {
-				navOptions?.let {
-					launchSingleTop = it.shouldLaunchSingleTop()
-					restoreState = it.shouldRestoreState()
-					if (it.popUpToRoute != null) {
-						popUpTo(it.popUpToRoute!!) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					} else if (it.popUpToRouteClass != null) {
-						popUpTo(it.popUpToRouteClass!!)
-					} else if (it.popUpToRouteObject != null && it.popUpToRouteObject !is Int) {
-						popUpTo(it.popUpToRouteObject!!) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					} else {
-						popUpTo(popUpToId) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					}
-				}
-				anim {
-					enter = R.anim.slide_in_right
-					exit = R.anim.slide_out_left
-					popEnter = R.anim.slide_in_left
-					popExit = R.anim.slide_out_right
-				}
+		val newBuilder: NavOptionsBuilder.() -> Unit = {
+			apply(builder)
+			anim {
+				enter = R.anim.slide_in_right
+				exit = R.anim.slide_out_left
+				popEnter = R.anim.slide_in_left
+				popExit = R.anim.slide_out_right
 			}
-
-		this.navigate(id, args, newNavOptions)
+		}
+		val navOptions = navOptions(newBuilder)
+		navigate(resId = id, args = args, navOptions = navOptions)
 	} catch (e: Exception) {
 		e.printStackTrace()
 	}
@@ -374,41 +352,20 @@ fun NavController.navigateWithAnimation(
 
 fun NavController.navigateWithAnimation(
 	directions: NavDirections,
-	navOptions: NavOptions? = null,
+	builder: NavOptionsBuilder.() -> Unit = {},
 ) {
 	try {
-		val newNavOptions =
-			navOptions {
-				navOptions?.let {
-					launchSingleTop = it.shouldLaunchSingleTop()
-					restoreState = it.shouldRestoreState()
-					if (it.popUpToRoute != null) {
-						popUpTo(it.popUpToRoute!!) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					} else if (it.popUpToRouteClass != null) {
-						popUpTo(it.popUpToRouteClass!!)
-					} else if (it.popUpToRouteObject != null) {
-						popUpTo(it.popUpToRouteObject!!) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					} else {
-						popUpTo(popUpToId) {
-							inclusive = it.isPopUpToInclusive()
-							saveState = it.shouldPopUpToSaveState()
-						}
-					}
-				}
-				anim {
-					enter = R.anim.slide_in_right
-					exit = R.anim.slide_out_left
-					popEnter = R.anim.slide_in_left
-					popExit = R.anim.slide_out_right
-				}
+		val newBuilder: NavOptionsBuilder.() -> Unit = {
+			apply(builder)
+			anim {
+				enter = R.anim.slide_in_right
+				exit = R.anim.slide_out_left
+				popEnter = R.anim.slide_in_left
+				popExit = R.anim.slide_out_right
 			}
-		navigate(directions, newNavOptions)
+		}
+		val navOptions = navOptions(newBuilder)
+		navigate(directions = directions, navOptions = navOptions)
 	} catch (e: Exception) {
 		e.printStackTrace()
 	}
